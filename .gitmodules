@@ -1,0 +1,3 @@
+[submodule "lib/hidapi"]
+	path = lib/hidapi
+	url = https://github.com/libusb/hidapi
