@@ -13,6 +13,8 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
     var statusBarController: StatusBarController?
     let popover = NSPopover.init()
+    let dial = Dial()
+    var controller: DialController?
 
 
     func applicationDidFinishLaunching(_ aNotification: Notification) {
@@ -22,10 +24,14 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         popover.contentViewController = NSHostingController(rootView: contentView)
         statusBarController = StatusBarController.init(popover)
         
+        dial.start();
+        
+        controller = DialController(dial: dial)
     }
 
     func applicationWillTerminate(_ aNotification: Notification) {
-        // Insert code here to tear down your application
+        dial.stop();
+        
     }
 
 
