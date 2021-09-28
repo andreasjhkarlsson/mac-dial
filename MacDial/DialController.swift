@@ -34,6 +34,8 @@ class DialController: DialDelegate
     
     func rotated(rotation: Dial.Rotation) {
         
+        print("Rotate: \(rotation)")
+        
         var steps = 0
         switch rotation {
         case .Clockwise(_):

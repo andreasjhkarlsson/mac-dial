@@ -138,6 +138,8 @@ class Dial
                 let readBytes = hid_read(dev, readBuffer.pointer, readBuffer.size)
                 
                 if readBytes <= 0 {
+                    print("Device disconnected")
+                    self.dev = nil;
                     return nil;
                 }
                 
@@ -200,6 +202,7 @@ class Dial
         while run {
             
             if !device.isConnected {
+                print("Trying to connect to device")
                 if device.connect() {
                     print("Device \(device.serialNumber) connected.")
                 }
@@ -222,12 +225,13 @@ class Dial
                     }
                     
                     self.lastButtonState = buttonState
+                
                 default:
                     print("Unknown input report")
                 } 
             }
             
-            quit.wait(timeout: DispatchTime(uptimeNanoseconds: 20_000_000))
+            quit.wait(timeout: .now().advanced(by: .milliseconds(100)))
         }
     }
 }
