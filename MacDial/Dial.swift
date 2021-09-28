@@ -1,13 +1,6 @@
-//
-//  Dial.swift
-//  MacDial
-//
-//  Created by Andreas Karlsson on 26/09/2021.
-//
 
 import Foundation
 import AppKit
-
 
 extension NSString {
     convenience init(wcharArray: UnsafeMutablePointer<wchar_t>) {
@@ -15,11 +8,6 @@ extension NSString {
                         length: wcslen(wcharArray) * MemoryLayout<wchar_t>.stride,
                         encoding: String.Encoding.utf32LittleEndian.rawValue)!
     }
-}
-
-protocol DialDelegate: AnyObject {
-    func buttonChanged(buttonState: Dial.ButtonState)
-    func rotated(rotation: Dial.Rotation)
 }
 
 class Dial
@@ -40,7 +28,7 @@ class Dial
         case unknown
     }
     
-    private class Device
+    class Device
     {
         private struct ReadBuffer {
             let pointer: UnsafeMutablePointer<UInt8>
@@ -144,10 +132,9 @@ class Dial
                 }
                 
                 let array = UnsafeMutableBufferPointer(start: readBuffer.pointer, count: Int(readBytes))
-                /*
+                
                 let dataStr = array.map({ String(format:"%02X", $0)}).joined(separator: " ")
                 print("Read data from device: \(dataStr)")
-                 */
                 
                 return parse(bytes: array)
             }
@@ -158,11 +145,12 @@ class Dial
     
     private var thread: Thread?
     var run: Bool = false
-    private let device = Device()
+    let device = Device()
     private let quit = DispatchSemaphore(value: 0)
     private var lastButtonState = ButtonState.released
     
-    weak var delegate: DialDelegate?
+    var onButtonStateChanged: ((ButtonState) -> Void)?
+    var onRotation: ((Rotation) -> Void)?
     
     init() {
         hid_init()
@@ -214,14 +202,14 @@ class Dial
                     
                     switch buttonState {
                     case .pressed where lastButtonState == .released:
-                        delegate?.buttonChanged(buttonState: .pressed)
+                        onButtonStateChanged?(.pressed)
                     case .released where lastButtonState == .pressed:
-                        delegate?.buttonChanged(buttonState: .released)
+                        onButtonStateChanged?(.released)
                     default: break
                     }
                     
                     if rotation != nil {
-                        delegate?.rotated(rotation: rotation!)
+                        onRotation?(rotation!)
                     }
                     
                     self.lastButtonState = buttonState
@@ -231,7 +219,7 @@ class Dial
                 } 
             }
             
-            quit.wait(timeout: .now().advanced(by: .milliseconds(100)))
+            let _ = quit.wait(timeout: .now().advanced(by: .milliseconds(50)))
         }
     }
 }
