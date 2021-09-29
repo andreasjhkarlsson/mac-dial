@@ -190,7 +190,7 @@ class Dial
         while run {
             
             if !device.isConnected {
-                print("Trying to connect to device")
+                //print("Trying to connect to device")
                 if device.connect() {
                     print("Device \(device.serialNumber) connected.")
                 }

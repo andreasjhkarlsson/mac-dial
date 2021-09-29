@@ -29,8 +29,6 @@ class StatusBarController
     private let menu: NSMenu
     private let dial: Dial
     
-    
-    
     struct MenuItems {
         let title = NSMenuItem.init(title: "Mac Dial")
         let connectionStatus = NSMenuItem.init()
@@ -46,15 +44,13 @@ class StatusBarController
     var currentMode: ControlMode? {
         get {
             if (menuItems.playbackMode.state == .on) {
-                return menuItems.playbackMode.representedObject as! ControlMode
+                return (menuItems.playbackMode.representedObject as! ControlMode)
             }
             if (menuItems.scrollMode.state == .on) {
-                return menuItems.scrollMode.representedObject as! ControlMode
+                return (menuItems.scrollMode.representedObject as! ControlMode)
             }
             
             return nil
-            
-            
         }
     }
     
@@ -71,31 +67,25 @@ class StatusBarController
             .font: NSFont.boldSystemFont(ofSize: 0)
         ]
         
-        
         menuItems.title.attributedTitle = NSAttributedString(string: menuItems.title.title, attributes: attributes)
         menuItems.title.target = self
         menuItems.title.action = #selector(showAbout(sender:))
         
-        
         menuItems.connectionStatus.target = self
         menuItems.connectionStatus.isEnabled = false
         
-        
         menuItems.scrollMode.target = self
         menuItems.scrollMode.action = #selector(setMode(sender:))
-        menuItems.scrollMode.state = .off;
+        menuItems.scrollMode.state = .on;
         menuItems.scrollMode.representedObject = ScrollControlMode()
-        
         
         menuItems.playbackMode.target = self
         menuItems.playbackMode.action = #selector(setMode(sender:))
-        menuItems.playbackMode.state = .on;
+        menuItems.playbackMode.state = .off;
         menuItems.playbackMode.representedObject = PlaybackControlMode()
         
         menuItems.quit.target = self;
         menuItems.quit.action = #selector(quitApp(sender:))
-        
-        
         
         menu.addMenuItems(menuItems)
         
@@ -106,11 +96,7 @@ class StatusBarController
             updateIcon()
             button.target = self
             button.imagePosition = .imageLeft
-            
         }
-
-        
-        
         
         Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { [weak self]_ in
             self?.updateConnectionStatus()
@@ -149,12 +135,11 @@ class StatusBarController
         else if (menuItems.playbackMode.state == .on) {
             statusBarButton?.image = #imageLiteral(resourceName: "icon-playback")
         }
-        statusBarButton?.image?.size = NSSize(width: 18.0, height: 18.0)
-        statusBarButton?.image?.isTemplate = true
+        
+        statusBarButton?.image?.size = NSSize(width: 18, height: 18)
     }
     
     @objc func showAbout(sender: AnyObject) {
-        
         
     }
     
@@ -168,10 +153,8 @@ class StatusBarController
         updateIcon()
     }
 
-        
     @objc func quitApp(sender: AnyObject) {
         NSApplication.shared.terminate(self)
     }
 
-    
 }
