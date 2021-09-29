@@ -1,6 +1,8 @@
 
 import Foundation
 import AppKit
+import Cocoa
+import SwiftUI
 
 extension NSString {
     convenience init(wcharArray: UnsafeMutablePointer<wchar_t>) {
@@ -40,12 +42,14 @@ class Dial
         }
         
         // Identifiers for the Surface Dial
-        private static let VendorId: UInt16 = 0x045E
-        private static let ProductId: UInt16 = 0x091B
+        static let VendorId: UInt16 = 0x045E
+        static let ProductId: UInt16 = 0x091B
         private var dev: OpaquePointer?
         private let readBuffer = ReadBuffer(size: 1024)
         
         init() {
+            
+            
             
         }
         
@@ -97,7 +101,7 @@ class Dial
             dev = nil
         }
         
-        private func parse(bytes: UnsafeMutableBufferPointer<UInt8>) -> InputReport? {
+        private func parse(bytes: UnsafeMutableBufferPointer<UInt8>) -> InputReport {
             switch bytes[0] {
             case 1 where bytes.count >= 4:
                 
@@ -114,10 +118,8 @@ class Dial
                 }}()
                 
                 return .dial(buttonState, rotation)
-            case 32:
-                return .unknown
             default:
-                return nil;
+                return .unknown
             }
         }
         
@@ -147,7 +149,7 @@ class Dial
     private var thread: Thread?
     private var run: Bool = false
     let device = Device()
-    private let quit = DispatchSemaphore(value: 0)
+    private let semaphore = DispatchSemaphore(value: 0)
     private var lastButtonState = ButtonState.released
     
     var onButtonStateChanged: ((ButtonState) -> Void)?
@@ -172,7 +174,7 @@ class Dial
     func stop() {
         run = false;
         if let thread = self.thread {
-            quit.signal()
+            semaphore.signal()
             device.disconnect()
             while !thread.isFinished { }
             self.thread = nil;
@@ -188,17 +190,33 @@ class Dial
     @objc
     private func threadProc(arg: NSObject) {
         
+        hid_monitor { vendorId, productId, serialNumber in
+            if (vendorId==Device.VendorId && productId==Device.ProductId) {
+                DispatchQueue.main.async {
+                    // We cannot capture 'self' here since this is a c function pointer
+                    // Luckily we can find ourselves again through the AppDelegate
+                    let app = NSApplication.shared.delegate as! AppDelegate
+                    app.dial.semaphore.signal()
+                }
+
+            }
+        }
+        
         while run {
             
             if !device.isConnected {
-                //print("Trying to connect to device")
+                print("Trying to open device...")
                 if device.connect() {
-                    print("Device \(device.serialNumber) connected.")
+                    print("Device \(device.serialNumber) opened.")
+                } else {
+                    print("Device couldn't be opened.")
                 }
             }
             
-            if device.isConnected {
+            while device.isConnected {
+                
                 switch device.read() {
+                
                 case .dial(let buttonState, let rotation):
                     
                     switch buttonState {
@@ -215,12 +233,14 @@ class Dial
                     
                     self.lastButtonState = buttonState
                 
-                default:
-                    print("Unknown input report")
-                } 
+                case .unknown:
+                    print("Unknown input report.")
+                case nil:
+                    print("Device disconnected.")
+                }
             }
             
-            let _ = quit.wait(timeout: .now().advanced(by: .milliseconds(50)))
+            let _ = semaphore.wait(timeout: .now().advanced(by: .seconds(60)))
         }
     }
 }
