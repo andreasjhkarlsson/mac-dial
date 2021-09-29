@@ -359,6 +359,7 @@
 					"@executable_path/../Frameworks",
 				);
 				LIBRARY_SEARCH_PATHS = "$(SRCROOT)/lib/hidapi/build/src/mac";
+				"LIBRARY_SEARCH_PATHS[arch=x86_64]" = "$(SRCROOT)/lib/hidapi/build_x86/src/mac";
 				MACOSX_DEPLOYMENT_TARGET = 10.15;
 				OTHER_LDFLAGS = "-lhidapi";
 				PRODUCT_BUNDLE_IDENTIFIER = com.andreasjhkarlsson.MacDial;
