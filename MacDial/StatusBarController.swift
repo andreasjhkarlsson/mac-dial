@@ -24,10 +24,10 @@ extension NSMenu {
 class StatusBarController
 {
     private let statusBar: NSStatusBar
-    private var statusBarButton: NSStatusBarButton?
     private let statusItem: NSStatusItem
     private let menu: NSMenu
     private let dial: Dial
+    private let menuItems = MenuItems()
     
     struct MenuItems {
         let title = NSMenuItem.init(title: "Mac Dial")
@@ -38,8 +38,6 @@ class StatusBarController
         let separator2 = NSMenuItem.separator()
         let quit = NSMenuItem.init(title: "Quit")
     }
-    
-    private let menuItems = MenuItems()
     
     var currentMode: ControlMode? {
         get {
@@ -91,11 +89,9 @@ class StatusBarController
         
         statusItem.menu = menu
         
-        statusBarButton = statusItem.button
-        if let button = statusBarButton {
-            updateIcon()
+        if let button = statusItem.button {
             button.target = self
-            button.imagePosition = .imageLeft
+            updateIcon()
         }
         
         Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { [weak self]_ in
@@ -129,14 +125,19 @@ class StatusBarController
     }
     
     private func updateIcon() {
-        if (menuItems.scrollMode.state == .on) {
-            statusBarButton?.image = #imageLiteral(resourceName: "icon-scroll")
-        }
-        else if (menuItems.playbackMode.state == .on) {
-            statusBarButton?.image = #imageLiteral(resourceName: "icon-playback")
-        }
         
-        statusBarButton?.image?.size = NSSize(width: 18, height: 18)
+        if let button = statusItem.button {
+            if (menuItems.scrollMode.state == .on) {
+                button.image = #imageLiteral(resourceName: "icon-scroll")
+            }
+            else if (menuItems.playbackMode.state == .on) {
+                button.image = #imageLiteral(resourceName: "icon-playback")
+            }
+            
+            button.image?.size = NSSize(width: 18, height: 18)
+            
+            button.imagePosition = .imageLeft
+        }
     }
     
     @objc func showAbout(sender: AnyObject) {

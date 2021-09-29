@@ -37,7 +37,6 @@ class Dial
                 self.size = size
                 pointer = UnsafeMutablePointer<UInt8>.allocate(capacity: size)
             }
-
         }
         
         // Identifiers for the Surface Dial
@@ -58,27 +57,29 @@ class Dial
         
         var manufacturer: String {
             get {
-                if let dev = self.dev {
-                    let buffer = UnsafeMutablePointer<wchar_t>.allocate(capacity: 255)
-                    
-                    hid_get_manufacturer_string(dev, buffer, 255)
-                    
-                    return NSString(wcharArray: buffer) as String
+                
+                guard let dev = self.dev else {
+                    return ""
                 }
                 
-                return ""
+                let buffer = UnsafeMutablePointer<wchar_t>.allocate(capacity: 255)
+                
+                hid_get_manufacturer_string(dev, buffer, 255)
+                
+                return NSString(wcharArray: buffer) as String
             }
         }
         
         var serialNumber: String {
             get {
-                if let dev = self.dev {
-                    let buffer = UnsafeMutablePointer<wchar_t>.allocate(capacity: 255)
-                    hid_get_serial_number_string(dev, buffer, 255)
-                    
-                    return NSString(wcharArray: buffer) as String
+                guard let dev = self.dev else {
+                    return ""
                 }
-                return ""
+                
+                let buffer = UnsafeMutablePointer<wchar_t>.allocate(capacity: 255)
+                hid_get_serial_number_string(dev, buffer, 255)
+                    
+                return NSString(wcharArray: buffer) as String
             }
         }
         
@@ -122,29 +123,29 @@ class Dial
         
         func read() -> InputReport?
         {
-            if let dev = self.dev {
-                let readBytes = hid_read(dev, readBuffer.pointer, readBuffer.size)
-                
-                if readBytes <= 0 {
-                    print("Device disconnected")
-                    self.dev = nil;
-                    return nil;
-                }
-                
-                let array = UnsafeMutableBufferPointer(start: readBuffer.pointer, count: Int(readBytes))
-                
-                let dataStr = array.map({ String(format:"%02X", $0)}).joined(separator: " ")
-                print("Read data from device: \(dataStr)")
-                
-                return parse(bytes: array)
+            guard let dev = self.dev else {
+                return nil
             }
             
-            return nil
+            let readBytes = hid_read(dev, readBuffer.pointer, readBuffer.size)
+            
+            if readBytes <= 0 {
+                print("Device disconnected")
+                self.dev = nil;
+                return nil;
+            }
+            
+            let array = UnsafeMutableBufferPointer(start: readBuffer.pointer, count: Int(readBytes))
+            
+            let dataStr = array.map({ String(format:"%02X", $0)}).joined(separator: " ")
+            print("Read data from device: \(dataStr)")
+            
+            return parse(bytes: array)
         }
     }
     
     private var thread: Thread?
-    var run: Bool = false
+    private var run: Bool = false
     let device = Device()
     private let quit = DispatchSemaphore(value: 0)
     private var lastButtonState = ButtonState.released
