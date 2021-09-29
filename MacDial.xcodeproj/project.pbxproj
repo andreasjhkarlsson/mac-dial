@@ -14,6 +14,7 @@
 		C882FA2D26F143E300595EE1 /* StatusBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C882FA2C26F143E300595EE1 /* StatusBarController.swift */; };
 		C89D24292703BA5E00B1A458 /* ControlMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = C89D24282703BA5E00B1A458 /* ControlMode.swift */; };
 		C89D242B2703CF4500B1A458 /* ScrollControlMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = C89D242A2703CF4500B1A458 /* ScrollControlMode.swift */; };
+		C89D242D2704870C00B1A458 /* PlaybackControlMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = C89D242C2704870C00B1A458 /* PlaybackControlMode.swift */; };
 		C89F31592701090400A8B365 /* Dial.swift in Sources */ = {isa = PBXBuildFile; fileRef = C89F31582701090400A8B365 /* Dial.swift */; };
 		C89F315B2701266400A8B365 /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C89F315A2701266400A8B365 /* CoreFoundation.framework */; };
 		C89F315D2701266A00A8B365 /* IOKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C89F315C2701266A00A8B365 /* IOKit.framework */; };
@@ -31,6 +32,7 @@
 		C882FA2C26F143E300595EE1 /* StatusBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusBarController.swift; sourceTree = "<group>"; };
 		C89D24282703BA5E00B1A458 /* ControlMode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ControlMode.swift; sourceTree = "<group>"; };
 		C89D242A2703CF4500B1A458 /* ScrollControlMode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScrollControlMode.swift; sourceTree = "<group>"; };
+		C89D242C2704870C00B1A458 /* PlaybackControlMode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaybackControlMode.swift; sourceTree = "<group>"; };
 		C89F3155270106E400A8B365 /* MacDial-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "MacDial-Bridging-Header.h"; sourceTree = "<group>"; };
 		C89F31582701090400A8B365 /* Dial.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Dial.swift; sourceTree = "<group>"; };
 		C89F315A2701266400A8B365 /* CoreFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreFoundation.framework; path = System/Library/Frameworks/CoreFoundation.framework; sourceTree = SDKROOT; };
@@ -83,6 +85,7 @@
 				C882FA1F26F1430D00595EE1 /* Preview Content */,
 				C89F31582701090400A8B365 /* Dial.swift */,
 				C89D242A2703CF4500B1A458 /* ScrollControlMode.swift */,
+				C89D242C2704870C00B1A458 /* PlaybackControlMode.swift */,
 			);
 			path = MacDial;
 			sourceTree = "<group>";
@@ -178,6 +181,7 @@
 				C882FA2D26F143E300595EE1 /* StatusBarController.swift in Sources */,
 				C882FA1A26F1430C00595EE1 /* AppDelegate.swift in Sources */,
 				C89D24292703BA5E00B1A458 /* ControlMode.swift in Sources */,
+				C89D242D2704870C00B1A458 /* PlaybackControlMode.swift in Sources */,
 				C89F31592701090400A8B365 /* Dial.swift in Sources */,
 				C89D242B2703CF4500B1A458 /* ScrollControlMode.swift in Sources */,
 			);

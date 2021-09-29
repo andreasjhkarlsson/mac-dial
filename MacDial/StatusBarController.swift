@@ -24,10 +24,12 @@ extension NSMenu {
 class StatusBarController
 {
     private let statusBar: NSStatusBar
+    private var statusBarButton: NSStatusBarButton?
     private let statusItem: NSStatusItem
     private let menu: NSMenu
     private let dial: Dial
-    private var mode = ScrollControlMode()
+    
+    
     
     struct MenuItems {
         let title = NSMenuItem.init(title: "Mac Dial")
@@ -40,6 +42,21 @@ class StatusBarController
     }
     
     private let menuItems = MenuItems()
+    
+    var currentMode: ControlMode? {
+        get {
+            if (menuItems.playbackMode.state == .on) {
+                return menuItems.playbackMode.representedObject as! ControlMode
+            }
+            if (menuItems.scrollMode.state == .on) {
+                return menuItems.scrollMode.representedObject as! ControlMode
+            }
+            
+            return nil
+            
+            
+        }
+    }
     
     init( _ dial: Dial) {
         self.dial = dial
@@ -65,13 +82,15 @@ class StatusBarController
         
         
         menuItems.scrollMode.target = self
-        menuItems.scrollMode.action = #selector(setScrollMode(sender:))
-        menuItems.scrollMode.state = .on;
+        menuItems.scrollMode.action = #selector(setMode(sender:))
+        menuItems.scrollMode.state = .off;
+        menuItems.scrollMode.representedObject = ScrollControlMode()
         
         
         menuItems.playbackMode.target = self
-        //menuItems.playbackMode.action = #selector(setPlaybackMode(sender:))
-        //menuItems.playbackMode.isEnabled = false
+        menuItems.playbackMode.action = #selector(setMode(sender:))
+        menuItems.playbackMode.state = .on;
+        menuItems.playbackMode.representedObject = PlaybackControlMode()
         
         menuItems.quit.target = self;
         menuItems.quit.action = #selector(quitApp(sender:))
@@ -82,13 +101,15 @@ class StatusBarController
         
         statusItem.menu = menu
         
-        if let statusBarButton = statusItem.button {
-            statusBarButton.image = #imageLiteral(resourceName: "icon");
-            statusBarButton.image?.size = NSSize(width: 18.0, height: 18.0)
-            statusBarButton.image?.isTemplate = true
-            statusBarButton.target = self
-            statusBarButton.imagePosition = .imageLeft
+        statusBarButton = statusItem.button
+        if let button = statusBarButton {
+            updateIcon()
+            button.target = self
+            button.imagePosition = .imageLeft
+            
         }
+
+        
         
         
         Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { [weak self]_ in
@@ -98,16 +119,16 @@ class StatusBarController
         dial.onButtonStateChanged = { [unowned self] state in
             switch state {
             case .pressed:
-                mode.onDown()
+                currentMode?.onDown()
                 break
             case .released:
-                mode.onUp()
+                currentMode?.onUp()
                 break
             }
         }
         
         dial.onRotation = { [unowned self] rotation in
-            mode.onRotate(rotation)
+            currentMode?.onRotate(rotation)
         }
     }
     
@@ -121,18 +142,32 @@ class StatusBarController
         }
     }
     
+    private func updateIcon() {
+        if (menuItems.scrollMode.state == .on) {
+            statusBarButton?.image = #imageLiteral(resourceName: "icon-scroll")
+        }
+        else if (menuItems.playbackMode.state == .on) {
+            statusBarButton?.image = #imageLiteral(resourceName: "icon-playback")
+        }
+        statusBarButton?.image?.size = NSSize(width: 18.0, height: 18.0)
+        statusBarButton?.image?.isTemplate = true
+    }
+    
     @objc func showAbout(sender: AnyObject) {
         
         
     }
     
-    @objc func setScrollMode(sender: AnyObject) {
+    @objc func setMode(sender: AnyObject) {
         
-    }
-    
-    @objc func setPlaybackMode(sender: AnyObject) {
+        let item = sender as! NSMenuItem
         
+        menuItems.playbackMode.state = item == menuItems.playbackMode ? .on : .off
+        menuItems.scrollMode.state = item == menuItems.scrollMode ? .on : .off
+        
+        updateIcon()
     }
+
         
     @objc func quitApp(sender: AnyObject) {
         NSApplication.shared.terminate(self)

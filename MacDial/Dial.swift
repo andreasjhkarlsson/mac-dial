@@ -100,7 +100,7 @@ class Dial
             switch bytes[0] {
             case 1 where bytes.count >= 4:
                 
-                let buttonState = bytes[1] == 3 ? ButtonState.pressed : .released
+                let buttonState = bytes[1]&1 == 1 ? ButtonState.pressed : .released
                 
                 let rotation = { () -> Rotation? in
                     switch bytes[2] {
