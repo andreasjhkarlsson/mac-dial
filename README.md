@@ -24,4 +24,4 @@ If you want to app to run at startup you will need to add it yourself to the "lo
 
 * More input modes
 * Change input mode using the dial itself
-* Smarter device discovery (currently tries to open the dial every 50 ms)
+* ~~Smarter device discovery (currently tries to open the dial every 50 ms)~~
