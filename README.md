@@ -4,7 +4,7 @@ macOS support for the Surface Dial. The surface dial can be paired with macOS bu
 
 ## Building
 
-Make sure to clone the hidapi submodule and build the library using the build_hidapi.sh script. Note: This app depends on a hidapi fork, check the submopdule to see what changed. App should then build with XCode.
+Make sure to clone the hidapi submodule and build the library using the build_hidapi.sh script. Note: This app depends on a hidapi fork, check the submodule to see what changed. App should then build with XCode.
 
 You can find universal builds of the app under "releases". Note that these builds can be outdated.
 
