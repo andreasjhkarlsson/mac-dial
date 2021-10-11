@@ -2,10 +2,22 @@
 import Foundation
 import AppKit
 
+enum WheelSensitivity {
+    case low
+    case medium
+    case high
+}
+
 extension NSMenuItem {
     convenience init(title: String) {
         self.init()
         self.title = title
+    }
+    
+    convenience init(title: String, sensitivity: WheelSensitivity) {
+        self.init()
+        self.title = title
+        self.representedObject = sensitivity
     }
 }
 
@@ -17,6 +29,12 @@ extension NSMenu {
         self.addItem(items.scrollMode)
         self.addItem(items.playbackMode)
         self.addItem(items.separator2)
+        items.wheelSensitivity.submenu = NSMenu.init()
+        for sensitivityOption in items.wheelSensitivityOptions {
+            items.wheelSensitivity.submenu?.addItem(sensitivityOption)
+        }
+        self.addItem(items.wheelSensitivity)
+        self.addItem(items.separator3)
         self.addItem(items.quit)
     }
 }
@@ -36,6 +54,13 @@ class StatusBarController
         let scrollMode = NSMenuItem.init(title: "Scroll mode")
         let playbackMode = NSMenuItem.init(title: "Playback mode")
         let separator2 = NSMenuItem.separator()
+        let wheelSensitivity = NSMenuItem.init(title: "Wheel sensitivity")
+        let wheelSensitivityOptions = [
+            NSMenuItem.init(title: "Low", sensitivity: .low),
+            NSMenuItem.init(title: "Medium", sensitivity: .medium),
+            NSMenuItem.init(title: "High", sensitivity: .high)
+        ]
+        let separator3 = NSMenuItem.separator()
         let quit = NSMenuItem.init(title: "Quit")
     }
     
@@ -49,6 +74,34 @@ class StatusBarController
             }
             
             return nil
+        }
+    }
+    
+    var wheelSensitivity: WheelSensitivity? {
+        get {
+            for option in menuItems.wheelSensitivityOptions {
+                if option.state == .on {
+                    return (option.representedObject as! WheelSensitivity)
+                }
+            }
+            return nil
+        }
+        set (sensitivity) {
+            switch sensitivity {
+            case .low:
+                dial.wheelSensitivity = 1
+                break
+            case .medium: dial.wheelSensitivity = 2
+                break
+            case .high:
+                dial.wheelSensitivity = 4
+                break
+            case .none:
+                break
+            }
+            for option in menuItems.wheelSensitivityOptions {
+                option.state = (option.representedObject as! WheelSensitivity) == sensitivity ? .on : .off
+            }
         }
     }
     
@@ -82,12 +135,19 @@ class StatusBarController
         menuItems.playbackMode.state = .off;
         menuItems.playbackMode.representedObject = PlaybackControlMode()
         
+        for option in menuItems.wheelSensitivityOptions {
+            option.target = self
+            option.action = #selector(setSensitivity(sender:))
+        }
+        
         menuItems.quit.target = self;
         menuItems.quit.action = #selector(quitApp(sender:))
         
         menu.addMenuItems(menuItems)
         
         statusItem.menu = menu
+        
+        wheelSensitivity = .medium
         
         if let button = statusItem.button {
             button.target = self
@@ -152,6 +212,11 @@ class StatusBarController
         menuItems.scrollMode.state = item == menuItems.scrollMode ? .on : .off
         
         updateIcon()
+    }
+    
+    @objc func setSensitivity(sender: AnyObject) {
+        let item = sender as! NSMenuItem
+        wheelSensitivity = (item.representedObject as! WheelSensitivity)
     }
 
     @objc func quitApp(sender: AnyObject) {

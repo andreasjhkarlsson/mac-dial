@@ -47,9 +47,9 @@ class Dial
         private var dev: OpaquePointer?
         private let readBuffer = ReadBuffer(size: 1024)
         
+        var wheelSensivitity = 1
+        
         init() {
-            
-            
             
         }
         
@@ -110,9 +110,9 @@ class Dial
                 let rotation = { () -> Rotation? in
                     switch bytes[2] {
                         case 1:
-                            return .Clockwise(1)
+                            return .Clockwise(1 * wheelSensivitity)
                         case 0xff:
-                            return .CounterClockwise(1)
+                            return .CounterClockwise(1 * wheelSensivitity)
                         default:
                             return nil
                 }}()
@@ -154,6 +154,16 @@ class Dial
     
     var onButtonStateChanged: ((ButtonState) -> Void)?
     var onRotation: ((Rotation) -> Void)?
+    
+    var wheelSensitivity: Int {
+        get {
+            return device.wheelSensivitity
+        }
+        
+        set (value) {
+            device.wheelSensivitity = value
+        }
+    }
     
     init() {
         hid_init()

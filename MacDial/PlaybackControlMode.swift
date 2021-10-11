@@ -4,9 +4,17 @@ import Foundation
 import AppKit
 
 // https://stackoverflow.com/a/55854051
-func HIDPostAuxKey(key: Int32) {
+func HIDPostAuxKey(key: Int32, modifiers: [NSEvent.ModifierFlags], _repeat: Int = 1) {
     func doKey(down: Bool) {
-        let flags = NSEvent.ModifierFlags(rawValue: (down ? 0xa00 : 0xb00))
+        
+        var rawFlags: UInt = (down ? 0xa00 : 0xb00);
+        
+        for modifier in modifiers {
+            rawFlags |= modifier.rawValue
+        }
+        
+        let flags = NSEvent.ModifierFlags(rawValue: rawFlags)
+        
         let data1 = Int((key<<16) | (down ? 0xa00 : 0xb00))
 
         let ev = NSEvent.otherEvent(with: NSEvent.EventType.systemDefined,
@@ -22,8 +30,11 @@ func HIDPostAuxKey(key: Int32) {
         let cev = ev?.cgEvent
         cev?.post(tap: CGEventTapLocation.cghidEventTap)
     }
-    doKey(down: true)
-    doKey(down: false)
+    for _ in 0..<_repeat {
+        doKey(down: true)
+        doKey(down: false)
+    }
+
 }
 
 
@@ -41,23 +52,29 @@ class PlaybackControlMode : ControlMode {
         
         // Next song on double click
         if (clickDelay < 0.5) {
-            HIDPostAuxKey(key: NX_KEYTYPE_NEXT)
+            HIDPostAuxKey(key: NX_KEYTYPE_NEXT, modifiers: [])
         }
         else { // Play / Pause on single click
             
-            HIDPostAuxKey(key: NX_KEYTYPE_PLAY)
+            HIDPostAuxKey(key: NX_KEYTYPE_PLAY, modifiers: [], _repeat: 1)
         }
         
         lastClick = Date().timeIntervalSince1970
     }
     
+    
+    
     func onRotate(_ rotation: Dial.Rotation) {
+        
+        let modifiers = [NSEvent.ModifierFlags.shift, NSEvent.ModifierFlags.option]
+        
         switch (rotation) {
-        case .Clockwise(_):
-            HIDPostAuxKey(key: NX_KEYTYPE_SOUND_UP)
+        case .Clockwise(let _repeat):
+            HIDPostAuxKey(key: NX_KEYTYPE_SOUND_UP, modifiers: modifiers, _repeat: _repeat)
             break
-        case .CounterClockwise(_):
-            HIDPostAuxKey(key: NX_KEYTYPE_SOUND_DOWN)
+        case .CounterClockwise(let _repeat):
+            HIDPostAuxKey(key: NX_KEYTYPE_SOUND_DOWN, modifiers: modifiers, _repeat: _repeat)
+
             break
         }
     }
