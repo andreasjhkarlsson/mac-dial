@@ -4,7 +4,7 @@ macOS support for the Surface Dial. The surface dial can be paired with macOS bu
 
 ## Building
 
-Make sure to clone the hidapi submodule and build the library using the build_hidapi.sh script. App should then build with XCode.
+Make sure to clone the hidapi submodule and build the library using the build_hidapi.sh script. Note: This app depends on a hidapi fork, check the submodule to see what changed. App should then build with XCode.
 
 You can find universal builds of the app under "releases". Note that these builds can be outdated.
 
@@ -24,4 +24,4 @@ If you want to app to run at startup you will need to add it yourself to the "lo
 
 * More input modes
 * Change input mode using the dial itself
-* Smarter device discovery (currently tries to open the dial every 50 ms)
+* ~~Smarter device discovery (currently tries to open the dial every 50 ms)~~
