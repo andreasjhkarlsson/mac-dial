@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="20034" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="20034"/>
+    </dependencies>
+    <scenes>
+        <!--Application-->
+        <scene sceneID="JPo-4y-FX3">
+            <objects>
+                <application id="hnw-xV-0zn" sceneMemberID="viewController">
+                    <menu key="mainMenu" title="Main Menu" systemMenu="main" id="AYu-sK-qS6">
+                        <items>
+                            <menuItem title="MacDial" id="1Xt-HY-uBw">
+                                <modifierMask key="keyEquivalentModifierMask"/>
+                                <menu key="submenu" title="MacDial" systemMenu="apple" id="uQy-DD-JDr">
+                                    <items>
+                                        <menuItem title="Quit MacDial" keyEquivalent="q" id="4sb-4s-VLi">
+                                            <connections>
+                                                <action selector="terminate:" target="Ady-hI-5gd" id="Te7-pn-YzF"/>
+                                            </connections>
+                                        </menuItem>
+                                    </items>
+                                </menu>
+                            </menuItem>
+                        </items>
+                    </menu>
+                    <connections>
+                        <outlet property="delegate" destination="Voe-Tx-rLC" id="PrD-fu-P6m"/>
+                    </connections>
+                </application>
+                <customObject id="Voe-Tx-rLC" customClass="AppDelegate" customModule="MacDial" customModuleProvider="target">
+                    <connections>
+                        <outlet property="controller" destination="gIN-nu-Pip" id="a7Z-td-ets"/>
+                    </connections>
+                </customObject>
+                <customObject id="Ady-hI-5gd" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
+                <menu id="G3k-FC-fVx">
+                    <items>
+                        <menuItem title="Not Connected to Dial" enabled="NO" id="yM5-u2-cSx">
+                            <modifierMask key="keyEquivalentModifierMask"/>
+                        </menuItem>
+                        <menuItem isSeparatorItem="YES" id="Uja-Rx-LjM"/>
+                        <menuItem title="Scroll Mode" identifier="mode.scroll" id="v7h-h5-CmP">
+                            <modifierMask key="keyEquivalentModifierMask"/>
+                            <connections>
+                                <action selector="modeSelectWithItem:" target="gIN-nu-Pip" id="mYK-VX-2Gm"/>
+                            </connections>
+                        </menuItem>
+                        <menuItem title="Playback Mode" state="on" identifier="mode.playback" id="gME-7l-za8">
+                            <modifierMask key="keyEquivalentModifierMask"/>
+                            <connections>
+                                <action selector="modeSelectWithItem:" target="gIN-nu-Pip" id="jKF-w9-Xhf"/>
+                            </connections>
+                        </menuItem>
+                        <menuItem title="Wheel Sensitivity" id="FER-f3-ImN">
+                            <modifierMask key="keyEquivalentModifierMask"/>
+                            <menu key="submenu" title="Wheel Sensitivity" id="vxR-co-3d8">
+                                <items>
+                                    <menuItem title="Low" state="on" identifier="sensitivity.low" id="bzY-GD-JPg">
+                                        <modifierMask key="keyEquivalentModifierMask"/>
+                                        <connections>
+                                            <action selector="sensitivitySelectWithItem:" target="gIN-nu-Pip" id="2vg-P7-p7n"/>
+                                        </connections>
+                                    </menuItem>
+                                    <menuItem title="Medium" identifier="sensitivity.medium" id="IxT-1H-xW0">
+                                        <modifierMask key="keyEquivalentModifierMask"/>
+                                        <connections>
+                                            <action selector="sensitivitySelectWithItem:" target="gIN-nu-Pip" id="b0u-D9-dtp"/>
+                                        </connections>
+                                    </menuItem>
+                                    <menuItem title="High" identifier="sensitivity.high" id="RIY-2g-aZW">
+                                        <modifierMask key="keyEquivalentModifierMask"/>
+                                        <connections>
+                                            <action selector="sensitivitySelectWithItem:" target="gIN-nu-Pip" id="UFa-WL-dBb"/>
+                                        </connections>
+                                    </menuItem>
+                                </items>
+                            </menu>
+                        </menuItem>
+                        <menuItem isSeparatorItem="YES" id="71T-DM-FsF"/>
+                        <menuItem title="Quit" keyEquivalent="q" id="O5Z-zk-v4Z">
+                            <connections>
+                                <action selector="quitTap" target="gIN-nu-Pip" id="qbk-9P-3gs"/>
+                            </connections>
+                        </menuItem>
+                    </items>
+                </menu>
+                <customObject id="gIN-nu-Pip" customClass="AppController" customModule="MacDial" customModuleProvider="target">
+                    <connections>
+                        <outlet property="menuControlModePlayback" destination="gME-7l-za8" id="LpZ-nM-dTV"/>
+                        <outlet property="menuControlModeScroll" destination="v7h-h5-CmP" id="uVG-cd-CG4"/>
+                        <outlet property="menuSensitivityHigh" destination="RIY-2g-aZW" id="cR2-bb-siw"/>
+                        <outlet property="menuSensitivityLow" destination="bzY-GD-JPg" id="XBl-Py-uZC"/>
+                        <outlet property="menuSensitivityMedium" destination="IxT-1H-xW0" id="7aX-fW-U0l"/>
+                        <outlet property="menuState" destination="yM5-u2-cSx" id="Xlw-Ju-l6O"/>
+                        <outlet property="statusMenu" destination="G3k-FC-fVx" id="8SM-pk-HuJ"/>
+                    </connections>
+                </customObject>
+            </objects>
+            <point key="canvasLocation" x="75" y="0.0"/>
+        </scene>
+    </scenes>
+</document>

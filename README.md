@@ -18,7 +18,7 @@ The app currently supports two modes:
 
 To change mode, click the Mac Dial icon in the system menu bar.
 
-If you want to app to run at startup you will need to add it yourself to the "login items" for your user.
+If you want to app to run at startup you will need to add it yourself to the "Login items" for your user.
 
 ## Improvements
 
