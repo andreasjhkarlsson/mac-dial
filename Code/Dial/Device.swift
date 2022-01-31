@@ -51,7 +51,9 @@ class DialDevice {
         self.connectionHandler = connectionHandler
         self.disconnectionHandler = disconnectionHandler
 
-        hid_init()
+        if hid_init() < 0 {
+            log("hid_init() returned an error")
+        }
 
         DispatchQueue.global(qos: .background).async { [weak self] in
             guard let self = self else { return }
@@ -67,14 +69,18 @@ class DialDevice {
     }
 
     deinit {
-        hid_exit()
+        if hid_exit() < 0 {
+            log("hid_exit() returned an error")
+        }
     }
 
     func connect() {
         devicePointer = hid_open(DialDevice.vendorId, DialDevice.productId, nil)
+        // TODO: this will connect to one of Dial devices. Needs work to be able to handle several.
         if isConnected {
             log("Device connected")
             connectionHandler(serialNumber)
+            readAndProcess()
         }
     }
 
@@ -85,23 +91,21 @@ class DialDevice {
         disconnectionHandler()
     }
 
-    private func parse(bytes: UnsafeMutableBufferPointer<UInt8>) -> (ButtonState?, RotationState?) {
-        guard bytes[0] == 1 && bytes.count >= 4 else { return (nil, nil) }
+    private func process(bytes: UnsafeMutableBufferPointer<UInt8>) {
+        guard bytes[0] == 1 && bytes.count >= 4 else { return }
 
         let isPressed = bytes[1] & 1 == 1
         let buttonState: ButtonState = isPressed ? .pressed : .released
+        buttonHandler(buttonState)
 
-        var rotation: RotationState?
         switch bytes[2] {
-            case 1: rotation = .clockwise(1 * wheelSensitivity)
-            case 0xff: rotation = .counterClockwise(1 * wheelSensitivity)
+            case 1: rotationHandler(.clockwise(1 * wheelSensitivity))
+            case 0xff: rotationHandler(.counterClockwise(1 * wheelSensitivity))
             default: break
         }
-
-        return (buttonState, rotation)
     }
 
-    private let readBufferSize: Int = 1024
+    private let readBufferSize: Int = 128
     private lazy var readBuffer: UnsafeMutablePointer<UInt8> = .allocate(capacity: readBufferSize)
 
     func readAndProcess() {
@@ -116,11 +120,7 @@ class DialDevice {
         }
 
         let array = UnsafeMutableBufferPointer(start: readBuffer, count: Int(readBytes))
-
+        process(bytes: array)
         log("Read data from device: \(array.map { String(format: "%02x", $0) }.joined(separator: " "))")
-
-        let (buttonState, rotationState) = parse(bytes: array)
-        buttonState.map(buttonHandler)
-        rotationState.map(rotationHandler)
     }
 }
