@@ -64,7 +64,7 @@ class PlaybackControlMode : ControlMode {
     
     
     
-    func onRotate(_ rotation: Dial.Rotation) {
+    func onRotate(_ rotation: Dial.Rotation,_ scrollDirection: Int) {
         
         let modifiers = [NSEvent.ModifierFlags.shift, NSEvent.ModifierFlags.option]
         

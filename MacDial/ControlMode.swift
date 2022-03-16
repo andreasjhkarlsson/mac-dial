@@ -7,5 +7,5 @@ protocol ControlMode: AnyObject
     
     func onUp()
     
-    func onRotate(_ rotation: Dial.Rotation)
+    func onRotate(_ rotation: Dial.Rotation,_ scrollDirection: Int)
 }
