@@ -2,35 +2,69 @@
 import Foundation
 import AppKit
 
-enum WheelSensitivity {
-    case low
-    case medium
-    case high
+enum WheelSensitivity: String {
+    case low = "low"
+    case medium = "medium"
+    case high = "high"
 }
 
-enum ScrollDirection {
-    case standard
-    case natural
+enum ScrollDirection: String {
+    case standard = "standard"
+    case natural = "natural"
 }
+
+enum Mode: String {
+    case scrolling = "scrolling"
+    case playback = "playback"
+}
+
 
 extension NSMenuItem {
     convenience init(title: String) {
         self.init()
         self.title = title
     }
-    
-    convenience init(title: String, sensitivity: WheelSensitivity) {
-        self.init()
-        self.title = title
-        self.representedObject = sensitivity
+}
+
+class MenuOptionItem<Type>: NSMenuItem {
+    init(title: String, option: Type) {
+        super.init(title: title, action: nil, keyEquivalent: "")
+        self.representedObject = option
     }
     
-    convenience init(title: String, direction: ScrollDirection) {
-        self.init()
-        self.title = title
-        self.representedObject = direction
+    required init(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    var selected : Bool
+    {
+        get { return self.state == .on }
+        set (on) { self.state = on ? .on : .off }
+    }
+    
+    var option : Type
+    {
+        get
+        {
+            return self.representedObject as! Type
+        }
     }
 }
+
+class ControllerOptionItem: MenuOptionItem<Mode>
+{
+    let controller: ControlMode
+    
+    init(title: String, mode: Mode, controller: ControlMode) {
+        self.controller = controller
+        super.init(title: title, option: mode)
+    }
+    
+    required init(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+}
+
 
 extension NSMenu {
     func addMenuItems(_ items: StatusBarController.MenuItems) {
@@ -67,45 +101,66 @@ class StatusBarController
         let title = NSMenuItem.init(title: "Mac Dial")
         let connectionStatus = NSMenuItem.init()
         let separator = NSMenuItem.separator()
-        let scrollMode = NSMenuItem.init(title: "Scroll mode")
-        let playbackMode = NSMenuItem.init(title: "Playback mode")
+        let scrollMode = ControllerOptionItem.init(title: "Scroll mode", mode: .scrolling, controller: ScrollControlMode())
+        let playbackMode = ControllerOptionItem.init(title: "Playback mode", mode: .playback, controller: PlaybackControlMode())
         let separator2 = NSMenuItem.separator()
         let wheelSensitivity = NSMenuItem.init(title: "Wheel sensitivity")
         let wheelSensitivityOptions = [
-            NSMenuItem.init(title: "Low", sensitivity: .low),
-            NSMenuItem.init(title: "Medium", sensitivity: .medium),
-            NSMenuItem.init(title: "High", sensitivity: .high)
+            MenuOptionItem<WheelSensitivity>.init(title: "Low", option: .low),
+            MenuOptionItem<WheelSensitivity>.init(title: "Medium", option: .medium),
+            MenuOptionItem<WheelSensitivity>.init(title: "High", option: .high)
         ]
         let scrollDirection = NSMenuItem.init(title: "Scroll Direction")
         let scrollDirectionOptions = [
-            NSMenuItem.init(title: "Standard", direction: .standard),
-            NSMenuItem.init(title: "Natural", direction: .natural)
+            MenuOptionItem<ScrollDirection>.init(title: "Standard", option: .standard),
+            MenuOptionItem<ScrollDirection>.init(title: "Natural", option: .natural)
         ]
         let separator3 = NSMenuItem.separator()
         let quit = NSMenuItem.init(title: "Quit")
     }
     
-    var currentMode: ControlMode? {
+    var currentMode: Mode
+    {
         get {
-            if (menuItems.playbackMode.state == .on) {
-                return (menuItems.playbackMode.representedObject as! ControlMode)
+            switch UserDefaults.standard.string(forKey: "mode")
+            {
+            case .some("scroll"):
+                return .scrolling
+            case .some("playback"):
+                return .playback
+            default:
+                return .scrolling
             }
-            if (menuItems.scrollMode.state == .on) {
-                return (menuItems.scrollMode.representedObject as! ControlMode)
+        }
+        
+        set (value) {
+            switch (value)
+            {
+            case .playback:
+                UserDefaults.standard.setValue("playback", forKey: "mode")
+            case .scrolling:
+                UserDefaults.standard.setValue("scroll", forKey: "mode")
             }
-            
-            return nil
+        }
+    }
+    
+    var currentController: ControlMode
+    {
+        get {
+            switch (currentMode)
+            {
+            case .playback:
+                return menuItems.playbackMode.controller
+            case .scrolling:
+                return menuItems.scrollMode.controller
+            }
         }
     }
     
     var wheelSensitivity: WheelSensitivity? {
         get {
-            for option in menuItems.wheelSensitivityOptions {
-                if option.state == .on {
-                    return (option.representedObject as! WheelSensitivity)
-                }
-            }
-            return nil
+            let raw = UserDefaults.standard.string(forKey: "sensitivity") ?? WheelSensitivity.medium.rawValue
+            return WheelSensitivity(rawValue: raw)
         }
         set (sensitivity) {
             switch sensitivity {
@@ -123,17 +178,15 @@ class StatusBarController
             for option in menuItems.wheelSensitivityOptions {
                 option.state = (option.representedObject as! WheelSensitivity) == sensitivity ? .on : .off
             }
+            
+            UserDefaults.standard.setValue(sensitivity?.rawValue, forKey: "sensitivity")
         }
     }
     
     var scrollDirection: ScrollDirection? {
         get {
-            for option in menuItems.scrollDirectionOptions {
-                if option.state == .on {
-                    return (option.representedObject as! ScrollDirection)
-                }
-            }
-            return nil
+            let raw = UserDefaults.standard.string(forKey: "direction") ?? ScrollDirection.natural.rawValue
+            return ScrollDirection(rawValue: raw)
         }
         set (scrollingDirection) {
             switch scrollingDirection {
@@ -149,6 +202,8 @@ class StatusBarController
             for option in menuItems.scrollDirectionOptions {
                 option.state = (option.representedObject as! ScrollDirection) == scrollingDirection ? .on : .off
             }
+            
+            UserDefaults.standard.setValue(scrollingDirection?.rawValue, forKey: "direction")
         }
     }
     
@@ -174,22 +229,22 @@ class StatusBarController
         
         menuItems.scrollMode.target = self
         menuItems.scrollMode.action = #selector(setMode(sender:))
-        menuItems.scrollMode.state = .on;
-        menuItems.scrollMode.representedObject = ScrollControlMode()
+        menuItems.scrollMode.selected = currentMode == .scrolling;
         
         menuItems.playbackMode.target = self
         menuItems.playbackMode.action = #selector(setMode(sender:))
-        menuItems.playbackMode.state = .off;
-        menuItems.playbackMode.representedObject = PlaybackControlMode()
+        menuItems.playbackMode.selected = currentMode == .playback;
         
         for option in menuItems.wheelSensitivityOptions {
             option.target = self
             option.action = #selector(setSensitivity(sender:))
+            option.selected = option.option == wheelSensitivity
         }
         
         for option in menuItems.scrollDirectionOptions {
             option.target = self
             option.action = #selector(setScrollDirection(sender:))
+            option.selected = option.option == scrollDirection
         }
         
         menuItems.quit.target = self;
@@ -198,10 +253,6 @@ class StatusBarController
         menu.addMenuItems(menuItems)
         
         statusItem.menu = menu
-        
-        wheelSensitivity = .medium
-        
-        scrollDirection = .natural  // set to standard or natural here to change default scroll direction
         
         if let button = statusItem.button {
             button.target = self
@@ -215,16 +266,16 @@ class StatusBarController
         dial.onButtonStateChanged = { [unowned self] state in
             switch state {
             case .pressed:
-                currentMode?.onDown()
+                currentController.onDown()
                 break
             case .released:
-                currentMode?.onUp()
+                currentController.onUp()
                 break
             }
         }
         
         dial.onRotation = { [unowned self] rotation, scrollDirection in
-            currentMode?.onRotate(rotation, scrollDirection)
+            currentController.onRotate(rotation, scrollDirection)
         }
     }
     
@@ -260,10 +311,12 @@ class StatusBarController
     
     @objc func setMode(sender: AnyObject) {
         
-        let item = sender as! NSMenuItem
+        let item = sender as! ControllerOptionItem
         
         menuItems.playbackMode.state = item == menuItems.playbackMode ? .on : .off
         menuItems.scrollMode.state = item == menuItems.scrollMode ? .on : .off
+        
+        currentMode = item.option
         
         updateIcon()
     }
