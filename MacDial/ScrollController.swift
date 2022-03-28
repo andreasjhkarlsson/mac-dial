@@ -2,7 +2,7 @@
 import Foundation
 import AppKit
 
-class ScrollControlMode: ControlMode
+class ScrollController: Controller
 {
     enum Direction {
         case up

@@ -1,7 +1,7 @@
 
 import Foundation
 
-protocol ControlMode: AnyObject
+protocol Controller: AnyObject
 {
     func onDown()
     

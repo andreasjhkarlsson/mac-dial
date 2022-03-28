@@ -53,9 +53,9 @@ class MenuOptionItem<Type>: NSMenuItem {
 
 class ControllerOptionItem: MenuOptionItem<Mode>
 {
-    let controller: ControlMode
+    let controller: Controller
     
-    init(title: String, mode: Mode, controller: ControlMode) {
+    init(title: String, mode: Mode, controller: Controller) {
         self.controller = controller
         super.init(title: title, option: mode)
     }
@@ -101,8 +101,8 @@ class StatusBarController
         let title = NSMenuItem.init(title: "Mac Dial")
         let connectionStatus = NSMenuItem.init()
         let separator = NSMenuItem.separator()
-        let scrollMode = ControllerOptionItem.init(title: "Scroll mode", mode: .scrolling, controller: ScrollControlMode())
-        let playbackMode = ControllerOptionItem.init(title: "Playback mode", mode: .playback, controller: PlaybackControlMode())
+        let scrollMode = ControllerOptionItem.init(title: "Scroll mode", mode: .scrolling, controller: ScrollController())
+        let playbackMode = ControllerOptionItem.init(title: "Playback mode", mode: .playback, controller: PlaybackController())
         let separator2 = NSMenuItem.separator()
         let wheelSensitivity = NSMenuItem.init(title: "Wheel sensitivity")
         let wheelSensitivityOptions = [
@@ -144,7 +144,7 @@ class StatusBarController
         }
     }
     
-    var currentController: ControlMode
+    var currentController: Controller
     {
         get {
             switch (currentMode)
