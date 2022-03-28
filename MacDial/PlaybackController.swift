@@ -52,6 +52,9 @@ class PlaybackController : Controller {
         
         // Next song on double click
         if (clickDelay < 0.5) {
+            // Undo pause sent on first click
+            HIDPostAuxKey(key: NX_KEYTYPE_PLAY, modifiers: [], _repeat: 1)
+            
             HIDPostAuxKey(key: NX_KEYTYPE_NEXT, modifiers: [])
         }
         else { // Play / Pause on single click
