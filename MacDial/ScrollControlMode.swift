@@ -30,7 +30,7 @@ class ScrollControlMode: ControlMode
     
     var lastRotate: TimeInterval = Date().timeIntervalSince1970
     
-    func onRotate(_ rotation: Dial.Rotation) {
+    func onRotate(_ rotation: Dial.Rotation,_ scrollDirection: Int) {
         var steps = 0
         switch rotation {
         case .Clockwise(let d):
@@ -38,6 +38,8 @@ class ScrollControlMode: ControlMode
         case .CounterClockwise(let d):
             steps = -d
         }
+        
+        steps *= scrollDirection;
         
         let diff = (Date().timeIntervalSince1970 - lastRotate) * 1000
         let multiplifer = Int(1 + ((150 - min(diff, 150)) / 40))

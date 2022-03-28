@@ -8,6 +8,11 @@ enum WheelSensitivity {
     case high
 }
 
+enum ScrollDirection {
+    case standard
+    case natural
+}
+
 extension NSMenuItem {
     convenience init(title: String) {
         self.init()
@@ -18,6 +23,12 @@ extension NSMenuItem {
         self.init()
         self.title = title
         self.representedObject = sensitivity
+    }
+    
+    convenience init(title: String, direction: ScrollDirection) {
+        self.init()
+        self.title = title
+        self.representedObject = direction
     }
 }
 
@@ -34,6 +45,11 @@ extension NSMenu {
             items.wheelSensitivity.submenu?.addItem(sensitivityOption)
         }
         self.addItem(items.wheelSensitivity)
+        items.scrollDirection.submenu = NSMenu.init()
+        for scrollDirectionOption in items.scrollDirectionOptions {
+            items.scrollDirection.submenu?.addItem(scrollDirectionOption)
+        }
+        self.addItem(items.scrollDirection)
         self.addItem(items.separator3)
         self.addItem(items.quit)
     }
@@ -59,6 +75,11 @@ class StatusBarController
             NSMenuItem.init(title: "Low", sensitivity: .low),
             NSMenuItem.init(title: "Medium", sensitivity: .medium),
             NSMenuItem.init(title: "High", sensitivity: .high)
+        ]
+        let scrollDirection = NSMenuItem.init(title: "Scroll Direction")
+        let scrollDirectionOptions = [
+            NSMenuItem.init(title: "Standard", direction: .standard),
+            NSMenuItem.init(title: "Natural", direction: .natural)
         ]
         let separator3 = NSMenuItem.separator()
         let quit = NSMenuItem.init(title: "Quit")
@@ -105,6 +126,32 @@ class StatusBarController
         }
     }
     
+    var scrollDirection: ScrollDirection? {
+        get {
+            for option in menuItems.scrollDirectionOptions {
+                if option.state == .on {
+                    return (option.representedObject as! ScrollDirection)
+                }
+            }
+            return nil
+        }
+        set (scrollingDirection) {
+            switch scrollingDirection {
+            case .standard:
+                dial.scrollDirection = 1
+                break
+            case .natural:
+                dial.scrollDirection = -1
+                break
+            case .none:
+                break
+            }
+            for option in menuItems.scrollDirectionOptions {
+                option.state = (option.representedObject as! ScrollDirection) == scrollingDirection ? .on : .off
+            }
+        }
+    }
+    
     init( _ dial: Dial) {
         self.dial = dial
         self.menu = NSMenu.init()
@@ -140,6 +187,11 @@ class StatusBarController
             option.action = #selector(setSensitivity(sender:))
         }
         
+        for option in menuItems.scrollDirectionOptions {
+            option.target = self
+            option.action = #selector(setScrollDirection(sender:))
+        }
+        
         menuItems.quit.target = self;
         menuItems.quit.action = #selector(quitApp(sender:))
         
@@ -148,6 +200,8 @@ class StatusBarController
         statusItem.menu = menu
         
         wheelSensitivity = .medium
+        
+        scrollDirection = .natural  // set to standard or natural here to change default scroll direction
         
         if let button = statusItem.button {
             button.target = self
@@ -169,8 +223,8 @@ class StatusBarController
             }
         }
         
-        dial.onRotation = { [unowned self] rotation in
-            currentMode?.onRotate(rotation)
+        dial.onRotation = { [unowned self] rotation, scrollDirection in
+            currentMode?.onRotate(rotation, scrollDirection)
         }
     }
     
@@ -217,6 +271,11 @@ class StatusBarController
     @objc func setSensitivity(sender: AnyObject) {
         let item = sender as! NSMenuItem
         wheelSensitivity = (item.representedObject as! WheelSensitivity)
+    }
+    
+    @objc func setScrollDirection(sender: AnyObject) {
+        let item = sender as! NSMenuItem
+        scrollDirection = (item.representedObject as! ScrollDirection)
     }
 
     @objc func quitApp(sender: AnyObject) {

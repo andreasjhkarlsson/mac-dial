@@ -49,6 +49,8 @@ class Dial
         
         var wheelSensivitity = 1
         
+        var scrollDirection = 1
+        
         init() {
             
         }
@@ -153,7 +155,7 @@ class Dial
     private var lastButtonState = ButtonState.released
     
     var onButtonStateChanged: ((ButtonState) -> Void)?
-    var onRotation: ((Rotation) -> Void)?
+    var onRotation: ((Rotation, Int) -> Void)?
     
     var wheelSensitivity: Int {
         get {
@@ -162,6 +164,16 @@ class Dial
         
         set (value) {
             device.wheelSensivitity = value
+        }
+    }
+    
+    var scrollDirection: Int {
+        get {
+            return device.scrollDirection
+        }
+        
+        set (value) {
+            device.scrollDirection = value
         }
     }
     
@@ -238,7 +250,7 @@ class Dial
                     }
                     
                     if rotation != nil {
-                        onRotation?(rotation!)
+                        onRotation?(rotation!, scrollDirection)
                     }
                     
                     self.lastButtonState = buttonState
