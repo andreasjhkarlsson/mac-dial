@@ -47,9 +47,11 @@ class Dial
         private var dev: OpaquePointer?
         private let readBuffer = ReadBuffer(size: 1024)
         
-        var wheelSensivitity = 1
+        var wheelSensivitity = 36
         
         var scrollDirection = 1
+        
+        var haptics = false
         
         init() {
             
@@ -92,15 +94,46 @@ class Dial
         @discardableResult
         func connect() -> Bool {
             dev = hid_open(Dial.Device.VendorId, Dial.Device.ProductId, nil)
-            
             return isConnected
         }
+        
         
         func disconnect() {
             if let dev = self.dev {
                 hid_close(dev)
             }
             dev = nil
+        }
+        
+        // https://github.com/daniel5151/surface-dial-linux/blob/main/src/dial_device/haptics.rs
+        func updateSensitivity() {
+            if isConnected {
+                let steps_lo = wheelSensivitity & 0xff;
+                let steps_hi = (wheelSensivitity >> 8) & 0xff;
+                var buf: Array<UInt8> = []
+                buf.append(1)
+                buf.append(UInt8(steps_lo)) // steps
+                buf.append(UInt8(steps_hi)) // steps
+                buf.append(0x00) // Repeat Count
+                buf.append(self.haptics ? 0x03 : 0x02) // auto trigger
+                buf.append(0x00) // Waveform Cutoff Time
+                buf.append(0x00) // retrigger period
+                buf.append(0x00) // retrigger period
+                
+                hid_send_feature_report(dev, buf, 8)
+            }
+        }
+        
+        func impact(repeatCount: UInt8 = 0) {
+            if isConnected {
+                var buf: Array<UInt8> = []
+                buf.append(0x01) // Report ID
+                buf.append(repeatCount) // RepeatCount
+                buf.append(0x03) // ManualTrigger
+                buf.append(0x00) // RetriggerPeriod (lo)
+                buf.append(0x00) // RetriggerPeriod (hi)
+                hid_write(dev, buf, 5)
+            }
         }
         
         private func parse(bytes: UnsafeMutableBufferPointer<UInt8>) -> InputReport {
@@ -112,9 +145,9 @@ class Dial
                 let rotation = { () -> Rotation? in
                     switch bytes[2] {
                         case 1:
-                            return .Clockwise(1 * wheelSensivitity)
+                            return .Clockwise(1)
                         case 0xff:
-                            return .CounterClockwise(1 * wheelSensivitity)
+                            return .CounterClockwise(1)
                         default:
                             return nil
                 }}()
@@ -164,6 +197,7 @@ class Dial
         
         set (value) {
             device.wheelSensivitity = value
+            device.updateSensitivity()
         }
     }
     
@@ -174,6 +208,17 @@ class Dial
         
         set (value) {
             device.scrollDirection = value
+        }
+    }
+    
+    var haptics: Bool {
+        get {
+            return device.haptics
+        }
+        
+        set (value) {
+            device.haptics = value
+            device.updateSensitivity()
         }
     }
     
@@ -194,6 +239,8 @@ class Dial
     }
     
     func stop() {
+        self.haptics = false
+        self.wheelSensitivity = 36
         run = false;
         if let thread = self.thread {
             semaphore.signal()

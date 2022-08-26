@@ -6,6 +6,7 @@ enum WheelSensitivity: String {
     case low = "low"
     case medium = "medium"
     case high = "high"
+    case extreme = "extreme"
 }
 
 enum ScrollDirection: String {
@@ -18,6 +19,10 @@ enum Mode: String {
     case playback = "playback"
 }
 
+enum HapticsMode: String {
+    case enabled = "enabled"
+    case disabled = "disabled"
+}
 
 extension NSMenuItem {
     convenience init(title: String) {
@@ -74,16 +79,25 @@ extension NSMenu {
         self.addItem(items.scrollMode)
         self.addItem(items.playbackMode)
         self.addItem(items.separator2)
+        
         items.wheelSensitivity.submenu = NSMenu.init()
         for sensitivityOption in items.wheelSensitivityOptions {
             items.wheelSensitivity.submenu?.addItem(sensitivityOption)
         }
         self.addItem(items.wheelSensitivity)
+        
         items.scrollDirection.submenu = NSMenu.init()
         for scrollDirectionOption in items.scrollDirectionOptions {
             items.scrollDirection.submenu?.addItem(scrollDirectionOption)
         }
         self.addItem(items.scrollDirection)
+        
+        items.hapticsMode.submenu = NSMenu.init()
+        for hapticsModeOption in items.hapticsModeOptions {
+            items.hapticsMode.submenu?.addItem(hapticsModeOption)
+        }
+        self.addItem(items.hapticsMode)
+        
         self.addItem(items.separator3)
         self.addItem(items.quit)
     }
@@ -104,16 +118,22 @@ class StatusBarController
         let scrollMode = ControllerOptionItem.init(title: "Scroll mode", mode: .scrolling, controller: ScrollController())
         let playbackMode = ControllerOptionItem.init(title: "Playback mode", mode: .playback, controller: PlaybackController())
         let separator2 = NSMenuItem.separator()
-        let wheelSensitivity = NSMenuItem.init(title: "Wheel sensitivity")
+        let wheelSensitivity = NSMenuItem.init(title: "Wheel Sensitivity")
         let wheelSensitivityOptions = [
             MenuOptionItem<WheelSensitivity>.init(title: "Low", option: .low),
             MenuOptionItem<WheelSensitivity>.init(title: "Medium", option: .medium),
-            MenuOptionItem<WheelSensitivity>.init(title: "High", option: .high)
+            MenuOptionItem<WheelSensitivity>.init(title: "High", option: .high),
+            MenuOptionItem<WheelSensitivity>.init(title: "Extreme", option: .extreme)
         ]
         let scrollDirection = NSMenuItem.init(title: "Scroll Direction")
         let scrollDirectionOptions = [
             MenuOptionItem<ScrollDirection>.init(title: "Standard", option: .standard),
             MenuOptionItem<ScrollDirection>.init(title: "Natural", option: .natural)
+        ]
+        let hapticsMode = NSMenuItem.init(title: "Haptics")
+        let hapticsModeOptions = [
+            MenuOptionItem<HapticsMode>.init(title: "Disabled", option: .disabled),
+            MenuOptionItem<HapticsMode>.init(title: "Enabled", option: .enabled)
         ]
         let separator3 = NSMenuItem.separator()
         let quit = NSMenuItem.init(title: "Quit")
@@ -165,13 +185,16 @@ class StatusBarController
         set (sensitivity) {
             switch sensitivity {
             case .low:
-                dial.wheelSensitivity = 1
+                dial.wheelSensitivity = 18
                 break
-            case .medium: dial.wheelSensitivity = 2
+            case .medium:
+                dial.wheelSensitivity = 36
                 break
             case .high:
-                dial.wheelSensitivity = 4
+                dial.wheelSensitivity = 72
                 break
+            case .extreme:
+                dial.wheelSensitivity = 360
             case .none:
                 break
             }
@@ -204,6 +227,30 @@ class StatusBarController
             }
             
             UserDefaults.standard.setValue(scrollingDirection?.rawValue, forKey: "direction")
+        }
+    }
+    
+    var hapticsMode: HapticsMode? {
+        get {
+            let raw = UserDefaults.standard.string(forKey: "hapticsmode") ?? HapticsMode.disabled.rawValue
+            return HapticsMode(rawValue: raw)
+        }
+        set (hapticsModeSet) {
+            switch hapticsModeSet {
+            case .disabled:
+                dial.haptics = false
+                break
+            case .enabled:
+                dial.haptics = true
+                break
+            case .none:
+                break
+            }
+            for option in menuItems.hapticsModeOptions {
+                option.state = (option.representedObject as! HapticsMode) == hapticsModeSet ? .on : .off
+            }
+            
+            UserDefaults.standard.setValue(String(hapticsModeSet!.rawValue), forKey: "hapticsmode")
         }
     }
     
@@ -240,12 +287,21 @@ class StatusBarController
             option.action = #selector(setSensitivity(sender:))
             option.selected = option.option == wheelSensitivity
         }
+        wheelSensitivity = wheelSensitivity // trigger set which updates dial
         
         for option in menuItems.scrollDirectionOptions {
             option.target = self
             option.action = #selector(setScrollDirection(sender:))
             option.selected = option.option == scrollDirection
         }
+        
+        for option in menuItems.hapticsModeOptions {
+            option.target = self
+            option.action = #selector(setHaptics(sender:))
+            option.selected = option.option == hapticsMode
+        }
+        hapticsMode = hapticsMode // trigger set which updates dial
+        
         
         menuItems.quit.target = self;
         menuItems.quit.action = #selector(quitApp(sender:))
@@ -329,6 +385,11 @@ class StatusBarController
     @objc func setScrollDirection(sender: AnyObject) {
         let item = sender as! NSMenuItem
         scrollDirection = (item.representedObject as! ScrollDirection)
+    }
+    
+    @objc func setHaptics(sender: AnyObject) {
+        let item = sender as! NSMenuItem
+        hapticsMode = (item.representedObject as! HapticsMode)
     }
 
     @objc func quitApp(sender: AnyObject) {
