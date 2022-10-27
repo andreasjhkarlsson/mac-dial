@@ -277,6 +277,7 @@ class Dial
                 print("Trying to open device...")
                 if device.connect() {
                     print("Device \(device.serialNumber) opened.")
+                    device.updateSensitivity() // thanks @bernhard-adobe
                 } else {
                     print("Device couldn't be opened.")
                 }
