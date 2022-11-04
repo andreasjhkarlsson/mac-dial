@@ -27,17 +27,15 @@ class AppController: NSObject {
     private let statusItem: NSStatusItem
 
     private let settings: UserSettings = .init()
-    
+
     private var dial: Dial?
     private var currentControlMode: DialDelegate & ControlMode = ScrollControlMode()
 
     override init() {
         statusItem = NSStatusBar.system.statusItem(withLength: NSStatusItem.variableLength)
-
         super.init()
-        
-        let dial = Dial(connectionHandler: connected, disconnectionHandler: disconnected)
-        self.dial = dial
+
+        dial = Dial(connectionHandler: connected, disconnectionHandler: disconnected)
     }
 
     override func awakeFromNib() {
@@ -58,19 +56,19 @@ class AppController: NSObject {
                 sensitivitySelect(item: menuSensitivityHigh)
         }
     }
-    
+
     func terminate() {
         dial = nil
     }
-    
+
     private func connected(_ serialNumber: String) {
         menuState.title = "Connected to MS Dial (serial: \(serialNumber))"
     }
-    
+
     private func disconnected() {
         menuState.title = "Not Connected to MS Dial"
     }
-    
+
     @IBAction
     private func modeSelect(item: NSMenuItem) {
         menuControlModeScroll.state = .off
@@ -115,7 +113,7 @@ class AppController: NSObject {
                 break
         }
     }
-    
+
     @IBAction
     private func quitTap(_ item: NSMenuItem) {
         NSApplication.shared.terminate(self)

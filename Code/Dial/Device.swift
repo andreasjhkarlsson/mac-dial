@@ -12,33 +12,26 @@
 
 import AppKit
 
+// Identifiers for the Surface Dial
+private let _dialVendorId: UInt16 = 0x045E
+private let _dialProductId: UInt16 = 0x091B
+
+private var _connectedSerialNumbers: [String] = []
+private var _setDevicePointerHandler: (IOHIDDevice, String) -> Void = { _, _ in }
+
+private var _buttonHandler: (ButtonState) -> Void = { _ in }
+private var _rotationHandler: (RotationState) -> Void = { _ in }
+private var _connectionHandler: (_ serialNumber: String) -> Void = { _ in }
+private var _disconnectionHandler: () -> Void = {}
+
 class DialDevice {
-    private var devicePointer: OpaquePointer?
-    private var isConnected: Bool { devicePointer != nil }
-    private var serialNumber: String {
-        guard let devicePointer = devicePointer else { return "" }
+    private var dialDevice: IOHIDDevice?
+    private var serialNumber: String = "—"
 
-        let buffer = UnsafeMutablePointer<wchar_t>.allocate(capacity: 255)
-        hid_get_serial_number_string(devicePointer, buffer, 255)
-        return NSString(
-            bytes: UnsafePointer(buffer),
-            length: wcslen(buffer) * MemoryLayout<wchar_t>.stride,
-            encoding: String.Encoding.utf32LittleEndian.rawValue
-        )! as String
-    }
+    private var isConnected: Bool { dialDevice != nil }
 
-    var wheelSensitivity: Double = 1
-
-    // Identifiers for the Surface Dial
-    private static let vendorId: UInt16 = 0x045E
-    private static let productId: UInt16 = 0x091B
-
-    private var isTerminated: Bool = false
-
-    private let buttonHandler: (ButtonState) -> Void
-    private let rotationHandler: (RotationState) -> Void
-    private let connectionHandler: (_ serialNumber: String) -> Void
-    private let disconnectionHandler: () -> Void
+    private let hidMainQueue: DispatchQueue = DispatchQueue(label: "MacDial.hid.main", target: DispatchQueue.main)
+    private let hidBackgroundQueue: DispatchQueue = DispatchQueue(label: "MacDial.hid.background", target: DispatchQueue.global(qos: .background))
 
     init(
         buttonHandler: @escaping (ButtonState) -> Void,
@@ -46,81 +39,98 @@ class DialDevice {
         connectionHandler: @escaping (_ serialNumber: String) -> Void,
         disconnectionHandler: @escaping () -> Void
     ) {
-        self.buttonHandler = buttonHandler
-        self.rotationHandler = rotationHandler
-        self.connectionHandler = connectionHandler
-        self.disconnectionHandler = disconnectionHandler
+        _buttonHandler = buttonHandler
+        _rotationHandler = rotationHandler
+        _connectionHandler = connectionHandler
+        _disconnectionHandler = { [self] in
+            guard let dialDevice else { return }
 
-        if hid_init() < 0 {
-            log("hid_init() returned an error")
+            _ = IOHIDDeviceClose(dialDevice, 0)
+            reportBuffer = .allocate(capacity: reportBufferLength)
+
+            _connectedSerialNumbers = _connectedSerialNumbers.filter { $0 != serialNumber }
+            self.dialDevice = nil
+            serialNumber = "—"
+            disconnectionHandler()
         }
-
-        DispatchQueue.global(qos: .background).async { [weak self] in
-            guard let self = self else { return }
-
-            while !self.isTerminated {
-                if !self.isConnected {
-                    self.connect()
-                } else {
-                    self.readAndProcess()
-                }
-            }
-        }
+        setupDeviceMonitoring()
     }
 
     deinit {
-        if hid_exit() < 0 {
-            log("hid_exit() returned an error")
-        }
+        IOHIDManagerClose(hidManager, UInt32(kIOHIDOptionsTypeNone))
+        log("HID manager closed")
     }
 
-    func connect() {
-        devicePointer = hid_open(DialDevice.vendorId, DialDevice.productId, nil)
-        // TODO: this will connect to one of Dial devices. Needs work to be able to handle several.
-        if isConnected {
-            log("Device connected")
-            connectionHandler(serialNumber)
+    private let hidManager: IOHIDManager = {
+        let result = IOHIDManagerCreate(kCFAllocatorDefault, UInt32(kIOHIDOptionsTypeNone))
+        IOHIDManagerOpen(result, 0)
+        IOHIDManagerSetDeviceMatching(result, nil)
+        IOHIDManagerScheduleWithRunLoop(result, CFRunLoopGetCurrent(), CFRunLoopMode.defaultMode.rawValue);
+        log("HID manager opened")
+        return result
+    }()
+
+    private func setupDeviceMonitoring() {
+        _setDevicePointerHandler = { [self] device, serialNumber in
+            dialDevice = device
+            self.serialNumber = serialNumber
+            _connectedSerialNumbers.append(serialNumber)
+            _connectionHandler(serialNumber)
             readAndProcess()
         }
+
+        let hidDeviceMatchingCallback: IOHIDDeviceCallback = { context, result, _, device in
+            let vendorIdValue = IOHIDDeviceGetProperty(device, kIOHIDVendorIDKey as NSString) as? Int32
+            let productIdValue = IOHIDDeviceGetProperty(device, kIOHIDProductIDKey as NSString) as? Int32
+            let serialNumberValue = IOHIDDeviceGetProperty(device, kIOHIDSerialNumberKey as NSString) as? NSString
+            guard let vendorId = vendorIdValue, let productId = productIdValue, let serialNumber = serialNumberValue as? String else { return }
+            guard vendorId == _dialVendorId, productId == _dialProductId else { return }
+            guard !_connectedSerialNumbers.contains(serialNumber) else { return }
+
+            log("Found Dial device: \(serialNumber)")
+            _setDevicePointerHandler(device, serialNumber)
+        }
+
+        IOHIDManagerRegisterDeviceMatchingCallback(hidManager, hidDeviceMatchingCallback, nil)
+        log("Monitoring started")
     }
 
     func disconnect() {
-        isTerminated = true
-        devicePointer.map(hid_close)
-        devicePointer = nil
-        disconnectionHandler()
+        IOHIDManagerClose(hidManager, 0)
     }
 
-    private func process(bytes: UnsafeMutableBufferPointer<UInt8>) {
-        guard bytes[0] == 1 && bytes.count >= 4 else { return }
-
-        let isPressed = bytes[1] & 1 == 1
-        let buttonState: ButtonState = isPressed ? .pressed : .released
-        buttonHandler(buttonState)
-
-        switch bytes[2] {
-            case 1: rotationHandler(.clockwise(1 * wheelSensitivity))
-            case 0xff: rotationHandler(.counterClockwise(1 * wheelSensitivity))
-            default: break
-        }
-    }
-
-    private let readBufferSize: Int = 128
-    private lazy var readBuffer: UnsafeMutablePointer<UInt8> = .allocate(capacity: readBufferSize)
+    private let reportBufferLength: Int = 128
+    private lazy var reportBuffer: UnsafeMutablePointer<UInt8> = .allocate(capacity: reportBufferLength)
 
     func readAndProcess() {
-        guard let device = devicePointer else { return }
+        guard let dialDevice else { return }
 
-        let readBytes = hid_read(device, readBuffer, readBufferSize)
-        guard readBytes > 0 else {
-            log("Device disconnected")
-            devicePointer = nil
-            disconnectionHandler()
-            return
+        let result = IOHIDDeviceOpen(dialDevice, 0)
+        guard result == kIOReturnSuccess else { return log("Device open error: \(result)") }
+
+        IOHIDDeviceScheduleWithRunLoop(dialDevice, CFRunLoopGetCurrent(), CFRunLoopMode.commonModes.rawValue)
+
+        let inputReportCallback: IOHIDReportCallback = { _, result, _, type, reportId, data, dataLength in
+            guard dataLength >= 4 && data[0] == 1 else { return }
+
+            let isPressed = data[1] & 1 == 1
+            let buttonState: ButtonState = isPressed ? .pressed : .released
+            _buttonHandler(buttonState)
+
+            let wheelSensitivity = 1.0
+
+            switch data[2] {
+                case 1: _rotationHandler(.clockwise(1 * wheelSensitivity))
+                case 0xff: _rotationHandler(.counterClockwise(1 * wheelSensitivity))
+                default: break
+            }
         }
+        IOHIDDeviceRegisterInputReportCallback(dialDevice, reportBuffer, reportBufferLength, inputReportCallback, nil)
 
-        let array = UnsafeMutableBufferPointer(start: readBuffer, count: Int(readBytes))
-        process(bytes: array)
-        log("Read data from device: \(array.map { String(format: "%02x", $0) }.joined(separator: " "))")
+        let removalCallback: IOHIDCallback = { _, result, data in
+            _disconnectionHandler()
+            log("Device disconnected")
+        }
+        IOHIDDeviceRegisterRemovalCallback(dialDevice, removalCallback, nil)
     }
 }

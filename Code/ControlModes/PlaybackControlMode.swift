@@ -53,46 +53,60 @@ class PlaybackControlMode: DialDelegate, ControlMode {
     }
 
     private var numberOfClicks: Int = 0
+    private var volumeAccumulator: Double = 0
+    private var volumeLastSentValue: Double = 0
     private var lastClickTime: TimeInterval = Date.timeIntervalSinceReferenceDate
 
     func buttonRelease() {
         let currentNumberOfClicks = numberOfClicks + 1
         numberOfClicks = currentNumberOfClicks
         lastClickTime = Date.timeIntervalSinceReferenceDate
-        log("Counting clicks: \(numberOfClicks)")
+        log("Media: Counting clicks: \(numberOfClicks)")
 
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) { [self] in
             guard currentNumberOfClicks == numberOfClicks else { return }
-            
-            switch self.numberOfClicks {
+
+            switch numberOfClicks {
                 case 1:
                     HIDPostAuxKey(key: NX_KEYTYPE_PLAY, modifiers: [], repeatCount: 1)
-                    log("Play/Pause")
+                    log("Media: Play/Pause")
                 case 2:
                     HIDPostAuxKey(key: NX_KEYTYPE_NEXT, modifiers: [])
-                    log("Play Next")
+                    log("Media: Play Next")
                 case 3 ... 1000:
                     HIDPostAuxKey(key: NX_KEYTYPE_PREVIOUS, modifiers: [])
-                    log("Play Previous")
+                    log("Media: Play Previous")
                 default:
                     break
             }
 
-            self.numberOfClicks = 0
+            numberOfClicks = 0
         }
     }
 
     func rotationChanged(_ rotation: RotationState) {
-        let modifiers = [NSEvent.ModifierFlags.shift, NSEvent.ModifierFlags.option]
-        let clicks = Int(round(rotation.amount))
+        let coefficient = 1.0
+        switch rotation {
+            case .clockwise(let amount):
+                volumeAccumulator += amount * coefficient
+                log("Media: Rotated cw; \(amount)")
+            case .counterClockwise(let amount):
+                volumeAccumulator -= amount * coefficient
+                log("Media: Rotated ccw; \(amount)")
+        }
+        log("Media: volume accumulator: \(volumeAccumulator)")
 
-        switch (rotation) {
-            case .clockwise:
-                HIDPostAuxKey(key: NX_KEYTYPE_SOUND_UP, modifiers: modifiers, repeatCount: clicks)
-                log("Sound up by \(clicks)")
-            case .counterClockwise:
-                HIDPostAuxKey(key: NX_KEYTYPE_SOUND_DOWN, modifiers: modifiers, repeatCount: clicks)
-                log("Sound down by \(clicks)")
+        if abs(volumeAccumulator - volumeLastSentValue) > 1 {
+            let key: Int32 = volumeAccumulator > volumeLastSentValue ? NX_KEYTYPE_SOUND_UP : NX_KEYTYPE_SOUND_DOWN
+            let clicks = floor(abs(volumeAccumulator - volumeLastSentValue))
+            volumeLastSentValue = volumeAccumulator + (key == NX_KEYTYPE_SOUND_UP ? 1 : -1) * clicks
+            log("Media: volume last sent value: \(volumeLastSentValue)")
+
+            DispatchQueue.main.async {
+                let modifiers = [ NSEvent.ModifierFlags.shift, NSEvent.ModifierFlags.option ]
+                HIDPostAuxKey(key: key, modifiers: modifiers, repeatCount: Int(clicks))
+                log("Media: Sound \(key == NX_KEYTYPE_SOUND_UP ? "up" : "down") by \(clicks)")
+            }
         }
     }
 }

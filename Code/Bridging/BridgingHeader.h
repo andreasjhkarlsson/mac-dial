@@ -13,6 +13,6 @@
 #ifndef BridgingHeader_h
 #define BridgingHeader_h
 
-#include <hidapi.h>
+//#include <hidapi.h>
 
 #endif /* BridgingHeader_h */
