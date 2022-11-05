@@ -20,10 +20,13 @@ enum ButtonState: Equatable {
 enum RotationState: Equatable {
     case clockwise(Double)
     case counterClockwise(Double)
-    
+    case stationary
+
     var amount: Double {
         switch self {
-            case .clockwise(let amount), .counterClockwise(let amount): return amount
+            case .clockwise(let amount): return amount
+            case .counterClockwise(let amount): return -amount
+            case .stationary: return 0
         }
     }
 }

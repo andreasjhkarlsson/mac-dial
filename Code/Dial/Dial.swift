@@ -16,13 +16,8 @@ class Dial {
     weak var delegate: DialDelegate?
 
     var wheelSensitivity: Double {
-        get {
-            1 // TODO:
-//            device.wheelSensitivity
-        }
-        set {
-//            device.wheelSensitivity = newValue
-        }
+        get { device.wheelSensitivity }
+        set { device.wheelSensitivity = newValue }
     }
 
     private var device: DialDevice!

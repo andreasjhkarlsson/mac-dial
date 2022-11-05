@@ -14,7 +14,7 @@ import AppKit
 
 class ScrollControlMode: DialDelegate, ControlMode {
     let image: NSImage = #imageLiteral(resourceName: "icon-scroll")
-    
+
     enum Direction {
         case up
         case down
@@ -34,7 +34,7 @@ class ScrollControlMode: DialDelegate, ControlMode {
         let translatedMousePos = NSPoint(x: mousePos.x, y: screenHeight - mousePos.y)
         let event = CGEvent(mouseEventSource: nil, mouseType: eventType, mouseCursorPosition: translatedMousePos, mouseButton: .left)
         event?.post(tap: .cghidEventTap)
-        
+
         log("Mouse event: \(eventType.rawValue == CGEventType.leftMouseDown.rawValue ? "left down" : "left up")")
     }
 
@@ -43,12 +43,7 @@ class ScrollControlMode: DialDelegate, ControlMode {
     func rotationChanged(_ rotation: RotationState) {
         let diff = (Date().timeIntervalSince1970 - lastRotate) * 1000
         let multiplier = Double(1.0 + ((150.0 - min(diff, 150.0)) / 40.0))
-
-        var steps: Int32 = Int32(floor(rotation.amount * multiplier))
-        switch rotation {
-            case .clockwise: break
-            case .counterClockwise: steps *= -1
-        }
+        let steps: Int32 = Int32(floor(rotation.amount * multiplier))
 
         let event = CGEvent(scrollWheelEvent2Source: nil, units: .line, wheelCount: 1, wheel1: steps, wheel2: 0, wheel3: 0)
         event?.post(tap: .cghidEventTap)

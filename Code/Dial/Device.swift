@@ -19,12 +19,19 @@ private let _dialProductId: UInt16 = 0x091B
 private var _connectedSerialNumbers: [String] = []
 private var _setDevicePointerHandler: (IOHIDDevice, String) -> Void = { _, _ in }
 
+private var _buttonWasState: ButtonState = .released
+private var _wheelSensitivity: Double = 1.0
 private var _buttonHandler: (ButtonState) -> Void = { _ in }
 private var _rotationHandler: (RotationState) -> Void = { _ in }
 private var _connectionHandler: (_ serialNumber: String) -> Void = { _ in }
 private var _disconnectionHandler: () -> Void = {}
 
 class DialDevice {
+    var wheelSensitivity: Double {
+        get { _wheelSensitivity }
+        set { _wheelSensitivity = newValue }
+    }
+
     private var dialDevice: IOHIDDevice?
     private var serialNumber: String = "—"
 
@@ -111,18 +118,23 @@ class DialDevice {
         IOHIDDeviceScheduleWithRunLoop(dialDevice, CFRunLoopGetCurrent(), CFRunLoopMode.commonModes.rawValue)
 
         let inputReportCallback: IOHIDReportCallback = { _, result, _, type, reportId, data, dataLength in
-            guard dataLength >= 4 && data[0] == 1 else { return }
+            guard dataLength >= 3 && data[0] == 1 else { return }
 
-            let isPressed = data[1] & 1 == 1
-            let buttonState: ButtonState = isPressed ? .pressed : .released
-            _buttonHandler(buttonState)
+            log("Got data: \(data[1]):\(data[2])")
 
-            let wheelSensitivity = 1.0
+            let buttonState: ButtonState = data[1] & 1 == 1 ? .pressed : .released
+            if buttonState != _buttonWasState {
+                _buttonWasState = buttonState
+                _buttonHandler(buttonState)
+            }
 
             switch data[2] {
-                case 1: _rotationHandler(.clockwise(1 * wheelSensitivity))
-                case 0xff: _rotationHandler(.counterClockwise(1 * wheelSensitivity))
-                default: break
+                case 1:
+                    _rotationHandler(.clockwise(_wheelSensitivity))
+                case 0xff:
+                    _rotationHandler(.counterClockwise(_wheelSensitivity))
+                default:
+                    break
             }
         }
         IOHIDDeviceRegisterInputReportCallback(dialDevice, reportBuffer, reportBufferLength, inputReportCallback, nil)

@@ -84,29 +84,47 @@ class PlaybackControlMode: DialDelegate, ControlMode {
         }
     }
 
-    func rotationChanged(_ rotation: RotationState) {
-        let coefficient = 1.0
-        switch rotation {
-            case .clockwise(let amount):
-                volumeAccumulator += amount * coefficient
-                log("Media: Rotated cw; \(amount)")
-            case .counterClockwise(let amount):
-                volumeAccumulator -= amount * coefficient
-                log("Media: Rotated ccw; \(amount)")
-        }
-        log("Media: volume accumulator: \(volumeAccumulator)")
+    private var lastActionWasUp: Bool?
 
-        if abs(volumeAccumulator - volumeLastSentValue) > 1 {
-            let key: Int32 = volumeAccumulator > volumeLastSentValue ? NX_KEYTYPE_SOUND_UP : NX_KEYTYPE_SOUND_DOWN
-            let clicks = floor(abs(volumeAccumulator - volumeLastSentValue))
-            volumeLastSentValue = volumeAccumulator + (key == NX_KEYTYPE_SOUND_UP ? 1 : -1) * clicks
-            log("Media: volume last sent value: \(volumeLastSentValue)")
+    func rotationChanged(_ rotation: RotationState) {
+        let step: Double = 1
+        let coefficient = 0.2
+
+        var key: Int32 = NX_KEYTYPE_SOUND_UP
+        switch rotation {
+            case .clockwise:
+                key = NX_KEYTYPE_SOUND_UP
+                if lastActionWasUp != true {
+                    volumeLastSentValue = volumeAccumulator + rotation.amount * coefficient - step
+                }
+                lastActionWasUp = true
+            case .counterClockwise: key = NX_KEYTYPE_SOUND_DOWN
+                if lastActionWasUp != false {
+                    volumeLastSentValue = volumeAccumulator + rotation.amount * coefficient + step
+                }
+                lastActionWasUp = false
+            case .stationary:
+                lastActionWasUp = nil
+                return
+        }
+        volumeAccumulator += rotation.amount * coefficient
+
+        let volumeDiff = abs(volumeAccumulator - volumeLastSentValue)
+        let clicks = floor(volumeDiff / step)
+
+        if volumeDiff >= step {
+            let sentValue = volumeLastSentValue + (key == NX_KEYTYPE_SOUND_UP ? 1 : -1) * (clicks * step)
+            log("Volume: \(key == NX_KEYTYPE_SOUND_UP ? "↑" : "↓") -> \(volumeAccumulator.formatted(.number.precision(.fractionLength(2)))) / \(volumeLastSentValue.formatted(.number.precision(.fractionLength(2)))) -> \(sentValue.formatted(.number.precision(.fractionLength(2))))")
+            volumeLastSentValue = sentValue
 
             DispatchQueue.main.async {
                 let modifiers = [ NSEvent.ModifierFlags.shift, NSEvent.ModifierFlags.option ]
                 HIDPostAuxKey(key: key, modifiers: modifiers, repeatCount: Int(clicks))
-                log("Media: Sound \(key == NX_KEYTYPE_SOUND_UP ? "up" : "down") by \(clicks)")
+                log("\(key == NX_KEYTYPE_SOUND_UP ? "↑" : "↓")")
+//                log("Media: \(key == NX_KEYTYPE_SOUND_UP ? "↑" : "↓") • \(clicks)")
             }
+        } else {
+            log("Volume: \(key == NX_KEYTYPE_SOUND_UP ? "↑" : "↓") -> \(volumeAccumulator.formatted(.number.precision(.fractionLength(2)))) / \(volumeLastSentValue.formatted(.number.precision(.fractionLength(2))))")
         }
     }
 }
