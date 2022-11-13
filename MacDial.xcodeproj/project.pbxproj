@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		2DBA116C33D51297D5384A52 /* DialDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DBA11B74C37AE96041F400D /* DialDelegate.swift */; };
+		2DBA1469D54228F68A66EB33 /* HIDReport.md in Sources */ = {isa = PBXBuildFile; fileRef = 2DBA1824516DE7C2EA24F590 /* HIDReport.md */; };
 		2DBA1905BF6BCA15F82AF8B8 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2DBA14031F68B505C8B42CD0 /* Main.storyboard */; };
 		2DBA1B39EA030F1D06E675B7 /* UserSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DBA1898A55AE4BDB7ED1A4C /* UserSettings.swift */; };
 		2DBA1FB8954597E33AFFEB26 /* Device.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DBA134CA4B2FEEA02C66B07 /* Device.swift */; };
@@ -28,6 +29,7 @@
 		2DBA11B74C37AE96041F400D /* DialDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DialDelegate.swift; sourceTree = "<group>"; };
 		2DBA134CA4B2FEEA02C66B07 /* Device.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Device.swift; sourceTree = "<group>"; };
 		2DBA14031F68B505C8B42CD0 /* Main.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
+		2DBA1824516DE7C2EA24F590 /* HIDReport.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = HIDReport.md; sourceTree = "<group>"; };
 		2DBA1898A55AE4BDB7ED1A4C /* UserSettings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserSettings.swift; sourceTree = "<group>"; };
 		C882FA1626F1430C00595EE1 /* MacDial.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MacDial.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C882FA1926F1430C00595EE1 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -66,6 +68,7 @@
 				FAC9E62627A46ACB00A6A453 /* Resources */,
 				C882FA1726F1430C00595EE1 /* Products */,
 				C89F31562701079000A8B365 /* Frameworks */,
+				2DBA1824516DE7C2EA24F590 /* HIDReport.md */,
 			);
 			sourceTree = "<group>";
 		};
@@ -220,6 +223,7 @@
 				2DBA116C33D51297D5384A52 /* DialDelegate.swift in Sources */,
 				FA01D9B327A54DFF00B542F9 /* ControlMode.swift in Sources */,
 				2DBA1B39EA030F1D06E675B7 /* UserSettings.swift in Sources */,
+				2DBA1469D54228F68A66EB33 /* HIDReport.md in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
