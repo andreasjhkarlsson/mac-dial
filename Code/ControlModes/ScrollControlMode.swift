@@ -1,5 +1,5 @@
 //
-// ScrollControllMode
+// ScrollControlMode
 // MacDial
 //
 // Created by Alex Babaev on 28 January 2022.
@@ -20,12 +20,20 @@ class ScrollControlMode: DialDelegate, ControlMode {
         case down
     }
 
+    private var lastButtonState: ButtonState?
+
     func buttonPress() {
-        sendMouse(eventType: .leftMouseDown)
+        if lastButtonState != .pressed {
+            lastButtonState = .pressed
+            sendMouse(eventType: .leftMouseDown)
+        }
     }
 
     func buttonRelease() {
-        sendMouse(eventType: .leftMouseUp)
+        if lastButtonState != .released {
+            lastButtonState = .released
+            sendMouse(eventType: .leftMouseUp)
+        }
     }
 
     private func sendMouse(eventType: CGEventType) {
@@ -35,20 +43,23 @@ class ScrollControlMode: DialDelegate, ControlMode {
         let event = CGEvent(mouseEventSource: nil, mouseType: eventType, mouseCursorPosition: translatedMousePos, mouseButton: .left)
         event?.post(tap: .cghidEventTap)
 
-        log("Mouse event: \(eventType.rawValue == CGEventType.leftMouseDown.rawValue ? "left down" : "left up")")
+        log(tag: "Scroll", "sent mouse event: \(eventType.rawValue == CGEventType.leftMouseDown.rawValue ? "left down" : "left up")")
     }
 
-    var lastRotate: TimeInterval = Date().timeIntervalSince1970
+    private var lastRotate: TimeInterval = Date().timeIntervalSince1970
 
-    func rotationChanged(_ rotation: RotationState) {
+    func rotationChanged(_ rotation: RotationState) -> Bool {
+        guard rotation != .stationary else { return false }
+
         let diff = (Date().timeIntervalSince1970 - lastRotate) * 1000
         let multiplier = Double(1.0 + ((150.0 - min(diff, 150.0)) / 40.0))
         let steps: Int32 = Int32(floor(rotation.amount * multiplier))
 
         let event = CGEvent(scrollWheelEvent2Source: nil, units: .line, wheelCount: 1, wheel1: steps, wheel2: 0, wheel3: 0)
         event?.post(tap: .cghidEventTap)
-        log("Scroll event: \(steps)")
+        log(tag: "Scroll", "sent scroll event: \(steps) steps")
 
         lastRotate = Date().timeIntervalSince1970
+        return true
     }
 }

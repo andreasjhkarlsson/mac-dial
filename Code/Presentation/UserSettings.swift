@@ -15,6 +15,7 @@ import Foundation
 extension SettingsValueKey {
     static let operationMode: SettingsValueKey = "settings.operationMode"
     static let sensitivity: SettingsValueKey = "settings.sensitivity"
+    static let rotationClick: SettingsValueKey = "settings.isRotationClickEnabled"
 }
 
 class UserSettings {
@@ -29,11 +30,14 @@ class UserSettings {
         case playbackAndVolume
     }
 
-    @FromUserDefaults(key: .operationMode)
-    private var operationModeSetting: Int?
+    @FromUserDefaults(key: .operationMode, defaultValue: 2)
+    private var operationModeSetting: Int
 
-    @FromUserDefaults(key: .sensitivity)
-    private var sensitivitySetting: Int?
+    @FromUserDefaults(key: .sensitivity, defaultValue: 2)
+    private var sensitivitySetting: Int
+
+    @FromUserDefaults(key: .rotationClick, defaultValue: true)
+    private var isRotationClickEnabledSetting: Bool
 
     var operationMode: OperationMode {
         get {
@@ -68,6 +72,15 @@ class UserSettings {
             }
         }
     }
+
+    var isRotationClickEnabled: Bool {
+        get {
+            isRotationClickEnabledSetting
+        }
+        set {
+            isRotationClickEnabledSetting = newValue
+        }
+    }
 }
 
 struct SettingsValueKey: ExpressibleByStringLiteral {
@@ -81,23 +94,21 @@ struct SettingsValueKey: ExpressibleByStringLiteral {
 @propertyWrapper
 struct FromUserDefaults<Value> {
     private let key: String
+    private let defaultValue: Value
     private let userDefaults: UserDefaults
 
-    init(key: SettingsValueKey, userDefaults: UserDefaults = UserDefaults.standard) {
+    init(key: SettingsValueKey, userDefaults: UserDefaults = UserDefaults.standard, defaultValue: Value) {
         self.key = key.name
+        self.defaultValue = defaultValue
         self.userDefaults = userDefaults
     }
 
-    var wrappedValue: Value? {
+    var wrappedValue: Value {
         get {
-            userDefaults.object(forKey: key) as? Value
+            userDefaults.object(forKey: key) as? Value ?? defaultValue
         }
         set {
-            if let newValue = newValue {
-                userDefaults.set(newValue, forKey: key)
-            } else {
-                userDefaults.removeObject(forKey: key)
-            }
+            userDefaults.set(newValue, forKey: key)
         }
     }
 }

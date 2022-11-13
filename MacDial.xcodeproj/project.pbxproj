@@ -21,6 +21,7 @@
 		C89F315F270126E100A8B365 /* AppKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C89F315E270126E100A8B365 /* AppKit.framework */; };
 		FA01D9B327A54DFF00B542F9 /* ControlMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA01D9B227A54DFF00B542F9 /* ControlMode.swift */; };
 		FA01D9B527A5541700B542F9 /* AppController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA01D9B427A5541700B542F9 /* AppController.swift */; };
+		FA8BA9CC29214B4E008383F4 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = FA8BA9CE29214B4E008383F4 /* Localizable.strings */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -41,7 +42,7 @@
 		C89F315E270126E100A8B365 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
 		FA01D9B227A54DFF00B542F9 /* ControlMode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ControlMode.swift; sourceTree = "<group>"; };
 		FA01D9B427A5541700B542F9 /* AppController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppController.swift; sourceTree = "<group>"; };
-		FAC9E62B27A46B3A00A6A453 /* BridgingHeader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BridgingHeader.h; sourceTree = "<group>"; };
+		FA8BA9CD29214B4E008383F4 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -79,7 +80,6 @@
 		C882FA1826F1430C00595EE1 /* Code */ = {
 			isa = PBXGroup;
 			children = (
-				FAC9E62A27A46B2D00A6A453 /* Bridging */,
 				FAC9E62927A46AFD00A6A453 /* ControlModes */,
 				FAC9E62827A46AF000A6A453 /* Dial */,
 				FAC9E62727A46ADF00A6A453 /* Presentation */,
@@ -105,6 +105,7 @@
 				C882FA2526F1430D00595EE1 /* Info.plist */,
 				C882FA2626F1430D00595EE1 /* MacDial.entitlements */,
 				2DBA14031F68B505C8B42CD0 /* Main.storyboard */,
+				FA8BA9CE29214B4E008383F4 /* Localizable.strings */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -136,14 +137,6 @@
 				FA01D9B227A54DFF00B542F9 /* ControlMode.swift */,
 			);
 			path = ControlModes;
-			sourceTree = "<group>";
-		};
-		FAC9E62A27A46B2D00A6A453 /* Bridging */ = {
-			isa = PBXGroup;
-			children = (
-				FAC9E62B27A46B3A00A6A453 /* BridgingHeader.h */,
-			);
-			path = Bridging;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -206,6 +199,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				C882FA1E26F1430D00595EE1 /* Assets.xcassets in Resources */,
+				FA8BA9CC29214B4E008383F4 /* Localizable.strings in Resources */,
 				2DBA1905BF6BCA15F82AF8B8 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -230,6 +224,17 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		FA8BA9CE29214B4E008383F4 /* Localizable.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				FA8BA9CD29214B4E008383F4 /* en */,
+			);
+			name = Localizable.strings;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
 		C882FA2726F1430D00595EE1 /* Debug */ = {
@@ -370,7 +375,6 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.lonelybytes.macdial;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
-				SWIFT_OBJC_BRIDGING_HEADER = Code/Bridging/BridgingHeader.h;
 				SWIFT_VERSION = 5.0;
 			};
 			name = Debug;
@@ -398,7 +402,6 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.lonelybytes.macdial;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "(Developer ID) Mac Dial Status Bar Item";
-				SWIFT_OBJC_BRIDGING_HEADER = Code/Bridging/BridgingHeader.h;
 				SWIFT_VERSION = 5.0;
 			};
 			name = Release;

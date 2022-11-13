@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="20034" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="21507" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="20034"/>
+        <deployment identifier="macosx"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="21507"/>
     </dependencies>
     <scenes>
         <!--Application-->
@@ -36,20 +37,26 @@
                 <customObject id="Ady-hI-5gd" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
                 <menu id="G3k-FC-fVx">
                     <items>
-                        <menuItem title="Not Connected to Dial" enabled="NO" id="yM5-u2-cSx">
+                        <menuItem title="Dial Mode" id="8LI-uh-zfA">
                             <modifierMask key="keyEquivalentModifierMask"/>
-                        </menuItem>
-                        <menuItem isSeparatorItem="YES" id="Uja-Rx-LjM"/>
-                        <menuItem title="Scroll Mode" identifier="mode.scroll" id="v7h-h5-CmP">
-                            <modifierMask key="keyEquivalentModifierMask"/>
+                            <menu key="submenu" title="Dial Mode" id="MrT-v4-Wf1">
+                                <items>
+                                    <menuItem title="Scroll Mode" image="icon-scroll-small" identifier="mode.scroll" id="v7h-h5-CmP">
+                                        <modifierMask key="keyEquivalentModifierMask"/>
+                                        <connections>
+                                            <action selector="modeSelectWithItem:" target="gIN-nu-Pip" id="mYK-VX-2Gm"/>
+                                        </connections>
+                                    </menuItem>
+                                    <menuItem title="Playback Mode" state="on" image="icon-playback-small" identifier="mode.playback" id="gME-7l-za8">
+                                        <modifierMask key="keyEquivalentModifierMask"/>
+                                        <connections>
+                                            <action selector="modeSelectWithItem:" target="gIN-nu-Pip" id="jKF-w9-Xhf"/>
+                                        </connections>
+                                    </menuItem>
+                                </items>
+                            </menu>
                             <connections>
-                                <action selector="modeSelectWithItem:" target="gIN-nu-Pip" id="mYK-VX-2Gm"/>
-                            </connections>
-                        </menuItem>
-                        <menuItem title="Playback Mode" state="on" identifier="mode.playback" id="gME-7l-za8">
-                            <modifierMask key="keyEquivalentModifierMask"/>
-                            <connections>
-                                <action selector="modeSelectWithItem:" target="gIN-nu-Pip" id="jKF-w9-Xhf"/>
+                                <action selector="modeSelectWithItem:" target="gIN-nu-Pip" id="UwT-26-Rfq"/>
                             </connections>
                         </menuItem>
                         <menuItem title="Wheel Sensitivity" id="FER-f3-ImN">
@@ -77,8 +84,18 @@
                                 </items>
                             </menu>
                         </menuItem>
+                        <menuItem title="Enable Rotation Click" id="g2u-Rf-4tx">
+                            <modifierMask key="keyEquivalentModifierMask"/>
+                            <connections>
+                                <action selector="rotationClickSelectWithItem:" target="gIN-nu-Pip" id="Tg2-mH-3aB"/>
+                            </connections>
+                        </menuItem>
                         <menuItem isSeparatorItem="YES" id="71T-DM-FsF"/>
-                        <menuItem title="Quit" keyEquivalent="q" id="O5Z-zk-v4Z">
+                        <menuItem title="Not Connected to Dial" enabled="NO" id="yM5-u2-cSx">
+                            <modifierMask key="keyEquivalentModifierMask"/>
+                        </menuItem>
+                        <menuItem title="Quit" id="O5Z-zk-v4Z">
+                            <modifierMask key="keyEquivalentModifierMask"/>
                             <connections>
                                 <action selector="quitTap" target="gIN-nu-Pip" id="qbk-9P-3gs"/>
                             </connections>
@@ -87,8 +104,12 @@
                 </menu>
                 <customObject id="gIN-nu-Pip" customClass="AppController" customModule="MacDial" customModuleProvider="target">
                     <connections>
+                        <outlet property="menuControlMode" destination="8LI-uh-zfA" id="Ffe-T2-bRA"/>
                         <outlet property="menuControlModePlayback" destination="gME-7l-za8" id="LpZ-nM-dTV"/>
                         <outlet property="menuControlModeScroll" destination="v7h-h5-CmP" id="uVG-cd-CG4"/>
+                        <outlet property="menuQuit" destination="O5Z-zk-v4Z" id="bua-Re-Fya"/>
+                        <outlet property="menuRotationClick" destination="g2u-Rf-4tx" id="04T-ka-edn"/>
+                        <outlet property="menuSensitivity" destination="FER-f3-ImN" id="Rer-iP-HjA"/>
                         <outlet property="menuSensitivityHigh" destination="RIY-2g-aZW" id="cR2-bb-siw"/>
                         <outlet property="menuSensitivityLow" destination="bzY-GD-JPg" id="XBl-Py-uZC"/>
                         <outlet property="menuSensitivityMedium" destination="IxT-1H-xW0" id="7aX-fW-U0l"/>
@@ -100,4 +121,8 @@
             <point key="canvasLocation" x="75" y="0.0"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="icon-playback-small" width="36" height="36"/>
+        <image name="icon-scroll-small" width="36" height="36"/>
+    </resources>
 </document>

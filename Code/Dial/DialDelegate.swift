@@ -34,5 +34,5 @@ enum RotationState: Equatable {
 protocol DialDelegate: AnyObject {
     func buttonPress()
     func buttonRelease()
-    func rotationChanged(_ rotation: RotationState)
+    func rotationChanged(_ rotation: RotationState) -> Bool
 }

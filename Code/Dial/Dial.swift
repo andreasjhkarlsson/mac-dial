@@ -20,6 +20,11 @@ class Dial {
         set { device.wheelSensitivity = newValue }
     }
 
+    var isRotationClickEnabled: Bool {
+        get { device.isRotationClickEnabled }
+        set { device.isRotationClickEnabled = newValue }
+    }
+
     private var device: DialDevice!
 
     init(
@@ -52,7 +57,7 @@ class Dial {
         }
     }
 
-    private func processRotation(state: RotationState) {
-        delegate?.rotationChanged(state)
+    private func processRotation(state: RotationState) -> Bool {
+        delegate?.rotationChanged(state) ?? false
     }
 }

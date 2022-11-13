@@ -15,14 +15,19 @@ import AppKit
 class AppController: NSObject {
     @IBOutlet private var statusMenu: NSMenu!
 
-    @IBOutlet private var menuState: NSMenuItem!
-
+    @IBOutlet private var menuControlMode: NSMenuItem!
     @IBOutlet private var menuControlModeScroll: NSMenuItem!
     @IBOutlet private var menuControlModePlayback: NSMenuItem!
 
+    @IBOutlet private var menuSensitivity: NSMenuItem!
     @IBOutlet private var menuSensitivityLow: NSMenuItem!
     @IBOutlet private var menuSensitivityMedium: NSMenuItem!
     @IBOutlet private var menuSensitivityHigh: NSMenuItem!
+
+    @IBOutlet private var menuRotationClick: NSMenuItem!
+
+    @IBOutlet private var menuState: NSMenuItem!
+    @IBOutlet private var menuQuit: NSMenuItem!
 
     private let statusItem: NSStatusItem
 
@@ -41,6 +46,16 @@ class AppController: NSObject {
     override func awakeFromNib() {
         statusItem.menu = statusMenu
 
+        menuControlMode.title = NSLocalizedString("menu.rotationMode", comment: "")
+        menuControlModePlayback.title = NSLocalizedString("menu.rotationMode.music", comment: "")
+        menuControlModeScroll.title = NSLocalizedString("menu.rotationMode.scroll", comment: "")
+        menuSensitivity.title = NSLocalizedString("menu.rotationSensitivity", comment: "")
+        menuSensitivityLow.title = NSLocalizedString("menu.rotationSensitivity.low", comment: "")
+        menuSensitivityMedium.title = NSLocalizedString("menu.rotationSensitivity.medium", comment: "")
+        menuSensitivityHigh.title = NSLocalizedString("menu.rotationSensitivity.high", comment: "")
+        menuRotationClick.title = NSLocalizedString("menu.rotationFeedback", comment: "")
+        menuQuit.title = NSLocalizedString("menu.quit", comment: "")
+
         switch settings.operationMode {
             case .scrolling:
                 modeSelect(item: menuControlModeScroll)
@@ -55,6 +70,7 @@ class AppController: NSObject {
             case .high:
                 sensitivitySelect(item: menuSensitivityHigh)
         }
+        updateRotationClickSetting(newValue: settings.isRotationClickEnabled)
     }
 
     func terminate() {
@@ -62,11 +78,11 @@ class AppController: NSObject {
     }
 
     private func connected(_ serialNumber: String) {
-        menuState.title = "Connected to MS Dial (serial: \(serialNumber))"
+        menuState.title = String(format: NSLocalizedString("dial.connected", comment: ""), serialNumber)
     }
 
     private func disconnected() {
-        menuState.title = "Not Connected to MS Dial"
+        menuState.title = NSLocalizedString("dial.disconnected", comment: "")
     }
 
     @IBAction
@@ -112,6 +128,18 @@ class AppController: NSObject {
             default:
                 break
         }
+    }
+
+    @IBAction
+    private func rotationClickSelect(item: NSMenuItem) {
+        updateRotationClickSetting(newValue: !settings.isRotationClickEnabled)
+    }
+
+    private func updateRotationClickSetting(newValue: Bool) {
+        settings.isRotationClickEnabled = newValue
+        dial?.isRotationClickEnabled = newValue
+        menuRotationClick.state = newValue ? .on : .off
+        menuRotationClick.title = "Rotation Feedback"
     }
 
     @IBAction

@@ -14,11 +14,16 @@ import AppKit
 
 let logsEnabled: Bool = true
 
-func log(_ message: @autoclosure () -> String) {
+#if DEBUG
+func log(tag: String, _ message: @autoclosure () -> String) {
     guard logsEnabled else { return }
 
-    print(message())
+    print("\(Date()) [\(tag)] \(message())")
 }
+#else
+func log(tag: String, _ message: @autoclosure () -> String) {
+}
+#endif
 
 @main
 class AppDelegate: NSObject, NSApplicationDelegate {
@@ -32,7 +37,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         func checkPermissionsAndRepeat() {
             let result = AXIsProcessTrusted()
             if !result {
-                log("Still no permission...")
+                log(tag: "App", "still no permission...")
                 DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
                     checkPermissionsAndRepeat()
                 }
