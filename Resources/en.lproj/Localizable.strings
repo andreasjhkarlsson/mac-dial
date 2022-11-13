@@ -1,7 +1,7 @@
 "dial.connected" = "Surface Dial SN: %@";
 "dial.disconnected" = "Surface Dial disconnected";
 
-"menu.rotationMode" = "Rotation Mode";
+"menu.rotationMode" = "Mode";
 "menu.rotationMode.scroll" = "Scroll/Click";
 "menu.rotationMode.music" = "Volume/Playback";
 
@@ -9,6 +9,10 @@
 "menu.rotationSensitivity.low" = "Low";
 "menu.rotationSensitivity.medium" = "Medium";
 "menu.rotationSensitivity.high" = "High";
+
+"menu.direction" = "Wheel Direction";
+"menu.direction.cw" = "Clockwise ↑";
+"menu.direction.ccw" = "Anticlockwise ↑";
 
 "menu.rotationFeedback" = "Haptics Feedback";
 

@@ -84,6 +84,28 @@
                                 </items>
                             </menu>
                         </menuItem>
+                        <menuItem title="Wheel Direction" id="Rcn-BF-7He">
+                            <modifierMask key="keyEquivalentModifierMask"/>
+                            <menu key="submenu" title="Dial Mode" id="Kia-rF-Ucp">
+                                <items>
+                                    <menuItem title="Clockwise ↑" identifier="direction.cw" id="8eF-Lz-fi6">
+                                        <modifierMask key="keyEquivalentModifierMask"/>
+                                        <connections>
+                                            <action selector="directionSelectWithItem:" target="gIN-nu-Pip" id="PV3-1i-Cgb"/>
+                                        </connections>
+                                    </menuItem>
+                                    <menuItem title="Anticlockwise ↑" state="on" identifier="direction.ccw" id="lmT-ql-Of7">
+                                        <modifierMask key="keyEquivalentModifierMask"/>
+                                        <connections>
+                                            <action selector="directionSelectWithItem:" target="gIN-nu-Pip" id="G6T-zq-OLv"/>
+                                        </connections>
+                                    </menuItem>
+                                </items>
+                            </menu>
+                            <connections>
+                                <action selector="rotationClickSelectWithItem:" target="gIN-nu-Pip" id="Fyd-4R-ZCY"/>
+                            </connections>
+                        </menuItem>
                         <menuItem title="Enable Rotation Click" id="g2u-Rf-4tx">
                             <modifierMask key="keyEquivalentModifierMask"/>
                             <connections>
@@ -114,6 +136,9 @@
                         <outlet property="menuSensitivityLow" destination="bzY-GD-JPg" id="XBl-Py-uZC"/>
                         <outlet property="menuSensitivityMedium" destination="IxT-1H-xW0" id="7aX-fW-U0l"/>
                         <outlet property="menuState" destination="yM5-u2-cSx" id="Xlw-Ju-l6O"/>
+                        <outlet property="menuWheelDirection" destination="Rcn-BF-7He" id="Ctr-CJ-bK0"/>
+                        <outlet property="menuWheelDirectionCCW" destination="lmT-ql-Of7" id="aVI-2a-bmL"/>
+                        <outlet property="menuWheelDirectionCW" destination="8eF-Lz-fi6" id="I5a-qp-eiU"/>
                         <outlet property="statusMenu" destination="G3k-FC-fVx" id="8SM-pk-HuJ"/>
                     </connections>
                 </customObject>

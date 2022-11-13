@@ -16,6 +16,7 @@ extension SettingsValueKey {
     static let operationMode: SettingsValueKey = "settings.operationMode"
     static let sensitivity: SettingsValueKey = "settings.sensitivity"
     static let rotationClick: SettingsValueKey = "settings.isRotationClickEnabled"
+    static let wheelDirection: SettingsValueKey = "settings.wheelDirection"
 }
 
 class UserSettings {
@@ -38,6 +39,9 @@ class UserSettings {
 
     @FromUserDefaults(key: .rotationClick, defaultValue: true)
     private var isRotationClickEnabledSetting: Bool
+
+    @FromUserDefaults(key: .wheelDirection, defaultValue: 1)
+    private var wheelDirectionSetting: Int
 
     var operationMode: OperationMode {
         get {
@@ -79,6 +83,15 @@ class UserSettings {
         }
         set {
             isRotationClickEnabledSetting = newValue
+        }
+    }
+
+    var wheelDirection: WheelDirection {
+        get {
+            wheelDirectionSetting < 0 ? .anticlockwise : .clockwise
+        }
+        set {
+            wheelDirectionSetting = newValue == .clockwise ? 1 : -1
         }
     }
 }

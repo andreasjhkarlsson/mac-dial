@@ -24,6 +24,10 @@ class AppController: NSObject {
     @IBOutlet private var menuSensitivityMedium: NSMenuItem!
     @IBOutlet private var menuSensitivityHigh: NSMenuItem!
 
+    @IBOutlet private var menuWheelDirection: NSMenuItem!
+    @IBOutlet private var menuWheelDirectionCW: NSMenuItem!
+    @IBOutlet private var menuWheelDirectionCCW: NSMenuItem!
+
     @IBOutlet private var menuRotationClick: NSMenuItem!
 
     @IBOutlet private var menuState: NSMenuItem!
@@ -49,10 +53,16 @@ class AppController: NSObject {
         menuControlMode.title = NSLocalizedString("menu.rotationMode", comment: "")
         menuControlModePlayback.title = NSLocalizedString("menu.rotationMode.music", comment: "")
         menuControlModeScroll.title = NSLocalizedString("menu.rotationMode.scroll", comment: "")
+
         menuSensitivity.title = NSLocalizedString("menu.rotationSensitivity", comment: "")
         menuSensitivityLow.title = NSLocalizedString("menu.rotationSensitivity.low", comment: "")
         menuSensitivityMedium.title = NSLocalizedString("menu.rotationSensitivity.medium", comment: "")
         menuSensitivityHigh.title = NSLocalizedString("menu.rotationSensitivity.high", comment: "")
+
+        menuWheelDirection.title = NSLocalizedString("menu.direction", comment: "")
+        menuWheelDirectionCW.title = NSLocalizedString("menu.direction.cw", comment: "")
+        menuWheelDirectionCCW.title = NSLocalizedString("menu.direction.ccw", comment: "")
+
         menuRotationClick.title = NSLocalizedString("menu.rotationFeedback", comment: "")
         menuQuit.title = NSLocalizedString("menu.quit", comment: "")
 
@@ -69,6 +79,12 @@ class AppController: NSObject {
                 sensitivitySelect(item: menuSensitivityMedium)
             case .high:
                 sensitivitySelect(item: menuSensitivityHigh)
+        }
+        switch settings.wheelDirection {
+            case .clockwise:
+                directionSelect(item: menuWheelDirectionCW)
+            case .anticlockwise:
+                directionSelect(item: menuWheelDirectionCCW)
         }
         updateRotationClickSetting(newValue: settings.isRotationClickEnabled)
     }
@@ -133,6 +149,24 @@ class AppController: NSObject {
     @IBAction
     private func rotationClickSelect(item: NSMenuItem) {
         updateRotationClickSetting(newValue: !settings.isRotationClickEnabled)
+    }
+
+    @IBAction
+    private func directionSelect(item: NSMenuItem) {
+        menuWheelDirectionCW.state = .off
+        menuWheelDirectionCCW.state = .off
+        switch item.identifier {
+            case menuWheelDirectionCW.identifier:
+                menuWheelDirectionCW.state = .on
+                dial?.wheelDirection = .clockwise
+                settings.wheelDirection = .clockwise
+            case menuWheelDirectionCCW.identifier:
+                menuWheelDirectionCCW.state = .on
+                dial?.wheelDirection = .anticlockwise
+                settings.wheelDirection = .anticlockwise
+            default:
+                break
+        }
     }
 
     private func updateRotationClickSetting(newValue: Bool) {

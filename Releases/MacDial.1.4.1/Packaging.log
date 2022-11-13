@@ -1,0 +1,119 @@
+2022-11-13 16:58:08 +0000  Initial pipeline context: <IDEDistributionProcessingPipelineContext: 0x44af661a0; archive(resolved)="<IDEArchive: 0x600004730480>", distributionTask(resolved)="2", distributionDestination(resolved)="1", distributionMethod(resolved)="<IDEDistributionMethodDeveloperID: 0x6000121d0940>", team(resolved)="<IDEProvisioningDisambiguatableBasicTeam: 0x6000077a1e80; teamID='2Y29N9EKUS', teamName='Alexander Babaev', teamType='Individual', username='iosdev@lonelybytes.com', isFreeProvisioningTeam='0'>">
+	Chain (12, self inclusive):
+	<IDEDistributionProcessingPipelineContext: 0x44af661a0; archive = "<IDEArchive: 0x600004730480>", distributionMethod="<IDEDistributionMethodDeveloperID: 0x6000121d0940>", team="<IDEProvisioningDisambiguatableBasicTeam: 0x6000077a1e80; teamID='2Y29N9EKUS', teamName='Alexander Babaev', teamType='Individual', username='iosdev@lonelybytes.com', isFreeProvisioningTeam='0'>">
+	<IDEDistributionProcessingPipelineContext: 0x44af65750; archive = "<IDEArchive: 0x600004730480>", distributionMethod="<IDEDistributionMethodDeveloperID: 0x6000121d0940>", team="<IDEProvisioningDisambiguatableBasicTeam: 0x6000077a1e80; teamID='2Y29N9EKUS', teamName='Alexander Babaev', teamType='Individual', username='iosdev@lonelybytes.com', isFreeProvisioningTeam='0'>">
+	<IDEDistributionContext: 0x2f6392a60; archive = "<IDEArchive: 0x600004730480>", distributionMethod="<IDEDistributionMethodDeveloperID: 0x6000121d0940>", team="<IDEProvisioningDisambiguatableBasicTeam: 0x6000077a1e80; teamID='2Y29N9EKUS', teamName='Alexander Babaev', teamType='Individual', username='iosdev@lonelybytes.com', isFreeProvisioningTeam='0'>">
+	<IDEDistributionContext: 0x44a2bdda0; archive = "<IDEArchive: 0x600004730480>", distributionMethod="<IDEDistributionMethodDeveloperID: 0x6000121d0940>", team="<IDEProvisioningDisambiguatableBasicTeam: 0x6000077a1e80; teamID='2Y29N9EKUS', teamName='Alexander Babaev', teamType='Individual', username='iosdev@lonelybytes.com', isFreeProvisioningTeam='0'>">
+	<IDEDistributionContext: 0x44a2a7040; archive = "<IDEArchive: 0x600004730480>", distributionMethod="<IDEDistributionMethodDeveloperID: 0x6000121d0940>", team="<IDEProvisioningDisambiguatableBasicTeam: 0x6000077a1e80; teamID='2Y29N9EKUS', teamName='Alexander Babaev', teamType='Individual', username='iosdev@lonelybytes.com', isFreeProvisioningTeam='0'>">
+	<IDEDistributionContext: 0x2f6482720; archive = "<IDEArchive: 0x600004730480>", distributionMethod="<IDEDistributionMethodDeveloperID: 0x6000121d0940>", team="<IDEProvisioningDisambiguatableBasicTeam: 0x6000077a1e80; teamID='2Y29N9EKUS', teamName='Alexander Babaev', teamType='Individual', username='iosdev@lonelybytes.com', isFreeProvisioningTeam='0'>">
+	<IDEDistributionContext: 0x1110f4660; archive = "<IDEArchive: 0x600004730480>", distributionMethod="<IDEDistributionMethodDeveloperID: 0x6000121d0940>", team="<IDEProvisioningDisambiguatableBasicTeam: 0x6000077a1e80; teamID='2Y29N9EKUS', teamName='Alexander Babaev', teamType='Individual', username='iosdev@lonelybytes.com', isFreeProvisioningTeam='0'>">
+	<IDEDistributionContext: 0x2f63463a0; archive = "<IDEArchive: 0x600004730480>", distributionMethod="<IDEDistributionMethodDeveloperID: 0x6000121d0940>", team="<IDEProvisioningDisambiguatableBasicTeam: 0x6000077a1e80; teamID='2Y29N9EKUS', teamName='Alexander Babaev', teamType='Individual', username='iosdev@lonelybytes.com', isFreeProvisioningTeam='0'>">
+	<IDEDistributionContext: 0x2f63578b0; archive = "<IDEArchive: 0x600004730480>", distributionMethod="<IDEDistributionMethodDeveloperID: 0x6000121d0940>", team="<IDEProvisioningDisambiguatableBasicTeam: 0x6000077a1e80; teamID='2Y29N9EKUS', teamName='Alexander Babaev', teamType='Individual', username='iosdev@lonelybytes.com', isFreeProvisioningTeam='0'>">
+	<IDEDistributionContext: 0x2f6473690; archive = "<IDEArchive: 0x600004730480>", distributionMethod="<IDEDistributionMethodDeveloperID: 0x6000121d0940>", team="(null)">
+	<IDEDistributionContext: 0x44a27b380; archive = "<IDEArchive: 0x600004730480>", distributionMethod="<IDEDistributionMethodDeveloperID: 0x6000121d0940>", team="(null)">
+	<IDEDistributionContext: 0x44ccaea80; archive = "<IDEArchive: 0x600004730480>", distributionMethod="(null)", team="(null)">
+</IDEDistributionProcessingPipelineContext: 0x44af661a0>
+2022-11-13 16:58:08 +0000  Processing step: IDEDistributionCreateDestRootStep
+2022-11-13 16:58:08 +0000  Processing step: IDEDistributionCopyItemStep
+2022-11-13 16:58:08 +0000  Running /usr/bin/ditto '-V' '/Users/alex/Library/Developer/Xcode/Archives/2022-11-13/MacDial 13.11.2022, 20.57.xcarchive/Products/Applications/MacDial.app' '/var/folders/zl/7z4_wms546508hby8fb7d77c0000gn/T/XcodeDistPipeline.~~~JYu4Dm/Root/Applications/MacDial.app'
+2022-11-13 16:58:08 +0000  >>> Copying /Users/alex/Library/Developer/Xcode/Archives/2022-11-13/MacDial 13.11.2022, 20.57.xcarchive/Products/Applications/MacDial.app 
+2022-11-13 16:58:08 +0000  copying file ./Contents/_CodeSignature/CodeResources ... 
+2022-11-13 16:58:08 +0000  3714 bytes for ./Contents/_CodeSignature/CodeResources
+2022-11-13 16:58:08 +0000  copying file ./Contents/MacOS/MacDial ... 
+2022-11-13 16:58:08 +0000  300672 bytes for ./Contents/MacOS/MacDial
+2022-11-13 16:58:08 +0000  copying file ./Contents/Resources/en.lproj/Localizable.strings ... 
+2022-11-13 16:58:08 +0000  1174 bytes for ./Contents/Resources/en.lproj/Localizable.strings
+2022-11-13 16:58:08 +0000  copying file ./Contents/Resources/AppIcon.icns ... 
+2022-11-13 16:58:08 +0000  87054 bytes for ./Contents/Resources/AppIcon.icns
+2022-11-13 16:58:08 +0000  copying file ./Contents/Resources/Main.storyboardc/MainMenu.nib ... 
+2022-11-13 16:58:08 +0000  5913 bytes for ./Contents/Resources/Main.storyboardc/MainMenu.nib
+2022-11-13 16:58:08 +0000  copying file ./Contents/Resources/Main.storyboardc/Info.plist ... 
+2022-11-13 16:58:08 +0000  163 bytes for ./Contents/Resources/Main.storyboardc/Info.plist
+2022-11-13 16:58:08 +0000  copying file ./Contents/Resources/Assets.car ... 
+2022-11-13 16:58:08 +0000  1688984 bytes for ./Contents/Resources/Assets.car
+2022-11-13 16:58:08 +0000  copying file ./Contents/embedded.provisionprofile ... 
+2022-11-13 16:58:08 +0000  12217 bytes for ./Contents/embedded.provisionprofile
+2022-11-13 16:58:08 +0000  copying file ./Contents/Info.plist ... 
+2022-11-13 16:58:08 +0000  1604 bytes for ./Contents/Info.plist
+2022-11-13 16:58:08 +0000  copying file ./Contents/PkgInfo ... 
+2022-11-13 16:58:08 +0000  8 bytes for ./Contents/PkgInfo
+2022-11-13 16:58:08 +0000  /usr/bin/ditto exited with 0
+2022-11-13 16:58:08 +0000  Processing step: IDEDistributionEmbedProfileStep
+2022-11-13 16:58:08 +0000  Processing step: IDEDistributionInfoPlistStep
+2022-11-13 16:58:08 +0000  Skipping step: IDEDistributionInfoPlistStep because it said so
+2022-11-13 16:58:08 +0000  Processing step: IDEDistributionAppThinningPlistStep
+2022-11-13 16:58:08 +0000  Processing step: IDEDistributionCompileBitcodeStep
+2022-11-13 16:58:08 +0000  Skipping step: IDEDistributionCompileBitcodeStep because it said so
+2022-11-13 16:58:08 +0000  Processing step: IDEDistributionCodeSlimmingStep
+2022-11-13 16:58:08 +0000  Processing step: IDEDistributionCopyBCSymbolMapsStep
+2022-11-13 16:58:08 +0000  Skipping step: IDEDistributionCopyBCSymbolMapsStep because it said so
+2022-11-13 16:58:08 +0000  Processing step: IDEDistributionSymbolsStep
+2022-11-13 16:58:08 +0000  Skipping step: IDEDistributionSymbolsStep because it said so
+2022-11-13 16:58:08 +0000  Processing step: IDEDistributionAppThinningStep
+2022-11-13 16:58:08 +0000  Skipping step: IDEDistributionAppThinningStep because it said so
+2022-11-13 16:58:08 +0000  Processing step: IDEDistributionArchThinningStep
+2022-11-13 16:58:08 +0000  Running /Applications/Xcode.14.1.0.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/lipo '/var/folders/zl/7z4_wms546508hby8fb7d77c0000gn/T/XcodeDistPipeline.~~~JYu4Dm/Root/Applications/MacDial.app/Contents/MacOS/MacDial' '-verify_arch' 'arm64e'
+2022-11-13 16:58:08 +0000  /Applications/Xcode.14.1.0.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/lipo exited with 1
+2022-11-13 16:58:08 +0000  Skipping architecture thinning for item "MacDial" because arch "arm64e" wasn't found
+2022-11-13 16:58:08 +0000  Processing step: IDEDistributionODRStep
+2022-11-13 16:58:08 +0000  Processing step: IDEDistributionStripXattrsStep
+2022-11-13 16:58:08 +0000  Running /usr/bin/xattr '-crs' '/var/folders/zl/7z4_wms546508hby8fb7d77c0000gn/T/XcodeDistPipeline.~~~JYu4Dm/Root/Applications/MacDial.app'
+2022-11-13 16:58:08 +0000  /usr/bin/xattr exited with 0
+2022-11-13 16:58:08 +0000  Processing step: IDEDistributionCodesignStep
+2022-11-13 16:58:08 +0000  Entitlements for <IDEDistributionItem: 0x6000047dec40; bundleID='com.lonelybytes.macdial', path='<DVTFilePath:0x600004a8e290:'/Users/alex/Library/Developer/Xcode/Archives/2022-11-13/MacDial 13.11.2022, 20.57.xcarchive/Products/Applications/MacDial.app'>', codeSigningInfo='<_DVTCodeSigningInformation_Path: 0x60003439c690; isSigned='1', isAdHocSigned='0', signingCertificate='<DVTSigningCertificate: 0x600005547c80; name='Developer ID Application: Alexander Babaev (2Y29N9EKUS)', hash='5ACCAFDDF56DCC3E83A0ADAAC5CB6A0A63A01B40', serialNumber='49A93E990251520', certificateKinds='(
+    "1.2.840.113635.100.6.1.13"
+), issueDate='2020-11-14 18:53:31 +0000''>', entitlements='{
+    "com.apple.application-identifier" = "2Y29N9EKUS.com.lonelybytes.macdial";
+    "com.apple.developer.team-identifier" = 2Y29N9EKUS;
+    "com.apple.security.app-sandbox" = 1;
+    "com.apple.security.automation.apple-events" = 1;
+    "com.apple.security.device.bluetooth" = 1;
+    "com.apple.security.device.usb" = 1;
+}', teamID='2Y29N9EKUS', identifier='com.lonelybytes.macdial', executablePath='<DVTFilePath:0x6000008757a0:'/Users/alex/Library/Developer/Xcode/Archives/2022-11-13/MacDial 13.11.2022, 20.57.xcarchive/Products/Applications/MacDial.app/Contents/MacOS/MacDial'>', hardenedRuntime='1'>'>: {
+    "com.apple.application-identifier" = "2Y29N9EKUS.com.lonelybytes.macdial";
+    "com.apple.developer.team-identifier" = 2Y29N9EKUS;
+    "com.apple.security.app-sandbox" = 1;
+    "com.apple.security.automation.apple-events" = 1;
+    "com.apple.security.device.bluetooth" = 1;
+    "com.apple.security.device.usb" = 1;
+}
+2022-11-13 16:58:08 +0000  Entitlements for <IDEDistributionItem: 0x6000047dec40; bundleID='com.lonelybytes.macdial', path='<DVTFilePath:0x600004a8e290:'/Users/alex/Library/Developer/Xcode/Archives/2022-11-13/MacDial 13.11.2022, 20.57.xcarchive/Products/Applications/MacDial.app'>', codeSigningInfo='<_DVTCodeSigningInformation_Path: 0x60003439c690; isSigned='1', isAdHocSigned='0', signingCertificate='<DVTSigningCertificate: 0x6000055477b0; name='Developer ID Application: Alexander Babaev (2Y29N9EKUS)', hash='5ACCAFDDF56DCC3E83A0ADAAC5CB6A0A63A01B40', serialNumber='49A93E990251520', certificateKinds='(
+    "1.2.840.113635.100.6.1.13"
+), issueDate='2020-11-14 18:53:31 +0000''>', entitlements='{
+    "com.apple.application-identifier" = "2Y29N9EKUS.com.lonelybytes.macdial";
+    "com.apple.developer.team-identifier" = 2Y29N9EKUS;
+    "com.apple.security.app-sandbox" = 1;
+    "com.apple.security.automation.apple-events" = 1;
+    "com.apple.security.device.bluetooth" = 1;
+    "com.apple.security.device.usb" = 1;
+}', teamID='2Y29N9EKUS', identifier='com.lonelybytes.macdial', executablePath='<DVTFilePath:0x6000008757a0:'/Users/alex/Library/Developer/Xcode/Archives/2022-11-13/MacDial 13.11.2022, 20.57.xcarchive/Products/Applications/MacDial.app/Contents/MacOS/MacDial'>', hardenedRuntime='1'>'> are: {
+    "com.apple.application-identifier" = "2Y29N9EKUS.com.lonelybytes.macdial";
+    "com.apple.developer.team-identifier" = 2Y29N9EKUS;
+    "com.apple.security.app-sandbox" = 1;
+    "com.apple.security.automation.apple-events" = 1;
+    "com.apple.security.device.bluetooth" = 1;
+    "com.apple.security.device.usb" = 1;
+}
+2022-11-13 16:58:08 +0000  Writing entitlements for <IDEDistributionItem: 0x6000047dec40; bundleID='com.lonelybytes.macdial', path='<DVTFilePath:0x600004a8e290:'/Users/alex/Library/Developer/Xcode/Archives/2022-11-13/MacDial 13.11.2022, 20.57.xcarchive/Products/Applications/MacDial.app'>', codeSigningInfo='<_DVTCodeSigningInformation_Path: 0x60003439c690; isSigned='1', isAdHocSigned='0', signingCertificate='<DVTSigningCertificate: 0x600005544210; name='Developer ID Application: Alexander Babaev (2Y29N9EKUS)', hash='5ACCAFDDF56DCC3E83A0ADAAC5CB6A0A63A01B40', serialNumber='49A93E990251520', certificateKinds='(
+    "1.2.840.113635.100.6.1.13"
+), issueDate='2020-11-14 18:53:31 +0000''>', entitlements='{
+    "com.apple.application-identifier" = "2Y29N9EKUS.com.lonelybytes.macdial";
+    "com.apple.developer.team-identifier" = 2Y29N9EKUS;
+    "com.apple.security.app-sandbox" = 1;
+    "com.apple.security.automation.apple-events" = 1;
+    "com.apple.security.device.bluetooth" = 1;
+    "com.apple.security.device.usb" = 1;
+}', teamID='2Y29N9EKUS', identifier='com.lonelybytes.macdial', executablePath='<DVTFilePath:0x6000008757a0:'/Users/alex/Library/Developer/Xcode/Archives/2022-11-13/MacDial 13.11.2022, 20.57.xcarchive/Products/Applications/MacDial.app/Contents/MacOS/MacDial'>', hardenedRuntime='1'>'> to: /var/folders/zl/7z4_wms546508hby8fb7d77c0000gn/T/XcodeDistPipeline.~~~JYu4Dm/entitlements~~~c9qRRP
+2022-11-13 16:58:08 +0000  Running /usr/bin/codesign '-vvv' '--force' '--sign' '5ACCAFDDF56DCC3E83A0ADAAC5CB6A0A63A01B40' '--entitlements' '/var/folders/zl/7z4_wms546508hby8fb7d77c0000gn/T/XcodeDistPipeline.~~~JYu4Dm/entitlements~~~c9qRRP' '--generate-entitlement-der' '--preserve-metadata=identifier,flags,runtime' '--requirements' '=designated => anchor apple generic  and identifier "$self.identifier" and ((cert leaf[field.1.2.840.113635.100.6.1.9] exists) or ( certificate 1[field.1.2.840.113635.100.6.2.6] exists and certificate leaf[field.1.2.840.113635.100.6.1.13] exists  and certificate leaf[subject.OU] = "2Y29N9EKUS" ))' '/var/folders/zl/7z4_wms546508hby8fb7d77c0000gn/T/XcodeDistPipeline.~~~JYu4Dm/Root/Applications/MacDial.app'
+2022-11-13 16:58:08 +0000  /var/folders/zl/7z4_wms546508hby8fb7d77c0000gn/T/XcodeDistPipeline.~~~JYu4Dm/Root/Applications/MacDial.app: replacing existing signature
+2022-11-13 16:58:09 +0000  /var/folders/zl/7z4_wms546508hby8fb7d77c0000gn/T/XcodeDistPipeline.~~~JYu4Dm/Root/Applications/MacDial.app: signed app bundle with Mach-O universal (x86_64 arm64) [com.lonelybytes.macdial]
+2022-11-13 16:58:09 +0000  /usr/bin/codesign exited with 0
+2022-11-13 16:58:09 +0000  Processing step: IDEDistributionZipODRItemStep
+2022-11-13 16:58:09 +0000  Skipping step: IDEDistributionZipODRItemStep because it said so
+2022-11-13 16:58:09 +0000  Processing step: IDEDistributionSkipPackagingStep
+2022-11-13 16:58:09 +0000  Processing step: IDEDistributionAppStoreInformationStep
+2022-11-13 16:58:09 +0000  Skipping step: IDEDistributionAppStoreInformationStep because it said so
+2022-11-13 16:58:09 +0000  Processing step: IDEDistributionGenerateProcessedDistributionItems
+2022-11-13 16:58:09 +0000  IDEDistributionItem init <DVTFilePath:0x60000c9bfbf0:'/var/folders/zl/7z4_wms546508hby8fb7d77c0000gn/T/XcodeDistPipeline.~~~JYu4Dm/Root/Applications/MacDial.app'>
+2022-11-13 16:58:09 +0000  Processing step: IDEDistributionCreateManifestStep
+2022-11-13 16:58:09 +0000  Skipping step: IDEDistributionCreateManifestStep because it said so

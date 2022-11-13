@@ -110,11 +110,11 @@ class PlaybackControlMode: DialDelegate, ControlMode {
                     volumeLastSentValue = volumeAccumulator + rotation.amount * coefficient - step
                 }
                 lastRotationDirection = .clockwise(1)
-            case .counterClockwise: key = NX_KEYTYPE_SOUND_DOWN
+            case .anticlockwise: key = NX_KEYTYPE_SOUND_DOWN
                 if lastRotationDirection.amount >= 0 {
                     volumeLastSentValue = volumeAccumulator + rotation.amount * coefficient + step
                 }
-                lastRotationDirection = .counterClockwise(1)
+                lastRotationDirection = .anticlockwise(1)
             case .stationary:
                 lastRotationDirection = .stationary
                 return false

@@ -20,6 +20,7 @@ private var _connectedSerialNumbers: [String] = []
 private var _setDevicePointerHandler: (IOHIDDevice, String) -> Void = { _, _ in }
 
 private var _wheelSensitivity: Double = 1.0
+private var _wheelDirection: WheelDirection = .clockwise
 
 private var _buttonHandler: (ButtonState) -> Void = { _ in }
 private var _rotationHandler: (RotationState) -> Bool = { _ in false }
@@ -35,6 +36,11 @@ class DialDevice {
     var wheelSensitivity: Double {
         get { _wheelSensitivity }
         set { _wheelSensitivity = newValue }
+    }
+
+    var wheelDirection: WheelDirection {
+        get { _wheelDirection }
+        set { _wheelDirection = newValue }
     }
 
     var isRotationClickEnabled: Bool = false
@@ -156,9 +162,15 @@ class DialDevice {
                         case 0:
                             needHaptics = _rotationHandler(.stationary)
                         case 1:
-                            needHaptics = _rotationHandler(.clockwise(_wheelSensitivity))
+                            let direction: RotationState = _wheelDirection == .clockwise
+                                ? .clockwise(_wheelSensitivity)
+                                : .anticlockwise(_wheelSensitivity)
+                            needHaptics = _rotationHandler(direction)
                         case -1:
-                            needHaptics = _rotationHandler(.counterClockwise(_wheelSensitivity))
+                            let direction: RotationState = _wheelDirection == .clockwise
+                                ? .anticlockwise(_wheelSensitivity)
+                                : .clockwise(_wheelSensitivity)
+                            needHaptics = _rotationHandler(direction)
                         default:
                             needHaptics = false
                     }

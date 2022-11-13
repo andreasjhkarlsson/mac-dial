@@ -20,6 +20,11 @@ class Dial {
         set { device.wheelSensitivity = newValue }
     }
 
+    var wheelDirection: WheelDirection {
+        get { device.wheelDirection }
+        set { device.wheelDirection = newValue }
+    }
+
     var isRotationClickEnabled: Bool {
         get { device.isRotationClickEnabled }
         set { device.isRotationClickEnabled = newValue }
