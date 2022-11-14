@@ -141,6 +141,8 @@ class AppController: NSObject {
         menuDialControlModeScroll.state = .off
         menuDialControlModeVolume.state = .off
         menuDialControlModeBrightness.state = .off
+        menuDialControlModeKeyboard.state = .off
+        menuDialControlModeZoom.state = .off
         item.state = .on
         menuDialControlMode.image = item.image
         switch item.identifier {
@@ -169,7 +171,7 @@ class AppController: NSObject {
                 )
                 settings.dialMode = .keyboard
             case menuDialControlModeZoom.identifier:
-                dialControl = DialScrollControl(modifiers: [ .control ])
+                dialControl = DialScrollControl(withControl: true)
                 settings.dialMode = .zoom
             default:
                 break

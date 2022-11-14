@@ -11,28 +11,19 @@
 //
 
 import AppKit
+import Carbon
 
 class DialScrollControl: DeviceControl {
-    private let modifiers: NSEvent.ModifierFlags
+    private let withControl: Bool
 
-    init(modifiers: NSEvent.ModifierFlags = []) {
-        self.modifiers = modifiers
+    init(withControl: Bool = false) {
+        self.withControl = withControl
     }
 
     func buttonPress() {
     }
 
     func buttonRelease() {
-    }
-
-    private func sendMouse(eventType: CGEventType) {
-        let mousePos = NSEvent.mouseLocation
-        let screenHeight = NSScreen.main?.frame.height ?? 0
-        let translatedMousePos = NSPoint(x: mousePos.x, y: screenHeight - mousePos.y)
-        let event = CGEvent(mouseEventSource: nil, mouseType: eventType, mouseCursorPosition: translatedMousePos, mouseButton: .left)
-        event?.post(tap: .cghidEventTap)
-
-        log(tag: "Scroll", "sent mouse event: \(eventType.rawValue == CGEventType.leftMouseDown.rawValue ? "left down" : "left up")")
     }
 
     private var lastRotate: TimeInterval = Date().timeIntervalSince1970
@@ -44,9 +35,19 @@ class DialScrollControl: DeviceControl {
         let multiplier = Double(1.0 + ((150.0 - min(diff, 150.0)) / 40.0))
         let steps: Int32 = Int32(floor(rotation.amount * multiplier))
 
-        let event = CGEvent(scrollWheelEvent2Source: nil, units: .line, wheelCount: 1, wheel1: steps, wheel2: 0, wheel3: 0)
-        event?.post(tap: .cghidEventTap)
-        log(tag: "Scroll", "sent scroll event: \(steps) steps")
+        let scrollEvent = CGEvent(
+            scrollWheelEvent2Source: nil,
+            units: withControl ? .pixel : .line,
+            wheelCount: 1,
+            wheel1: steps,
+            wheel2: 0,
+            wheel3: 0
+        )
+        if withControl {
+            scrollEvent?.flags = .maskControl
+        }
+        scrollEvent?.post(tap: .cghidEventTap)
+        log(tag: "Scroll", "sent scroll event: \(steps) steps\(withControl ? " with Control" : "")")
 
         lastRotate = Date().timeIntervalSince1970
         return true
