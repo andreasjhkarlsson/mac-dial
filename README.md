@@ -10,7 +10,7 @@ You can find universal builds of the app under "releases". Note that these build
 
 ## Usage
 
-The app will continously try to open any Surface Dial connected to the computer and then process inpout controls. You will need to pair and connect the device  as any other bluetooth device.
+The app will continously try to open any Surface Dial connected to the computer and then process input controls. You will need to pair and connect the device as any other bluetooth device.
 
 The app currently supports two modes:
 * Scroll mode: Turning the dial will result in scrolling. Pressing the dial is interpreteded as a mouse click at the current cursor position.
