@@ -13,6 +13,7 @@
 		2DBA179F38FAAE40805B5323 /* ButtonPressControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DBA1BDF69863D61FDD7CB3F /* ButtonPressControl.swift */; };
 		2DBA1905BF6BCA15F82AF8B8 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2DBA14031F68B505C8B42CD0 /* Main.storyboard */; };
 		2DBA1B39EA030F1D06E675B7 /* UserSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DBA1898A55AE4BDB7ED1A4C /* UserSettings.swift */; };
+		2DBA1EB5593E29FFD3DD16DF /* DialZoomControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DBA11338B12EF8AD2CB3645 /* DialZoomControl.swift */; };
 		2DBA1FB8954597E33AFFEB26 /* Device.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DBA134CA4B2FEEA02C66B07 /* Device.swift */; };
 		C882FA1A26F1430C00595EE1 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C882FA1926F1430C00595EE1 /* AppDelegate.swift */; };
 		C882FA1E26F1430D00595EE1 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C882FA1D26F1430D00595EE1 /* Assets.xcassets */; };
@@ -27,6 +28,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		2DBA11338B12EF8AD2CB3645 /* DialZoomControl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DialZoomControl.swift; sourceTree = "<group>"; };
 		2DBA11B74C37AE96041F400D /* DeviceControl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeviceControl.swift; sourceTree = "<group>"; };
 		2DBA134817855F7B605FABE8 /* ButtonPlaybackControl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ButtonPlaybackControl.swift; sourceTree = "<group>"; };
 		2DBA134CA4B2FEEA02C66B07 /* Device.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Device.swift; sourceTree = "<group>"; };
@@ -143,6 +145,7 @@
 				2DBA151FDA5C8860610CD02D /* HID.Helpers.swift */,
 				2DBA1BDF69863D61FDD7CB3F /* ButtonPressControl.swift */,
 				2DBA134817855F7B605FABE8 /* ButtonPlaybackControl.swift */,
+				2DBA11338B12EF8AD2CB3645 /* DialZoomControl.swift */,
 			);
 			path = ControlModes;
 			sourceTree = "<group>";
@@ -230,6 +233,7 @@
 				2DBA1531BDED42DBEA94036E /* HID.Helpers.swift in Sources */,
 				2DBA179F38FAAE40805B5323 /* ButtonPressControl.swift in Sources */,
 				2DBA16DB57BAE6DE838B0866 /* ButtonPlaybackControl.swift in Sources */,
+				2DBA1EB5593E29FFD3DD16DF /* DialZoomControl.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -379,6 +383,7 @@
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = Resources/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = MacDial;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -410,6 +415,7 @@
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = Resources/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = MacDial;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",

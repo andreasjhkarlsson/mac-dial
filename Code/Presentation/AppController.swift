@@ -69,6 +69,11 @@ class AppController: NSObject {
         menuDialControlModeKeyboard.title = NSLocalizedString("menu.dialMode.keyboard", comment: "")
         menuDialControlModeZoom.title = NSLocalizedString("menu.dialMode.zoom", comment: "")
 
+        // TODO: Does not work for now, so disabling
+        if let menu = menuDialControlModeZoom.menu, let index = menu.items.firstIndex(of: menuDialControlModeZoom) {
+            menu.items.remove(at: index)
+        }
+
         menuSensitivity.title = NSLocalizedString("menu.rotationSensitivity", comment: "")
         menuSensitivityLow.title = NSLocalizedString("menu.rotationSensitivity.low", comment: "")
         menuSensitivityMedium.title = NSLocalizedString("menu.rotationSensitivity.medium", comment: "")
@@ -171,7 +176,7 @@ class AppController: NSObject {
                 )
                 settings.dialMode = .keyboard
             case menuDialControlModeZoom.identifier:
-                dialControl = DialScrollControl(withControl: true)
+                dialControl = DialZoomControl()
                 settings.dialMode = .zoom
             default:
                 break

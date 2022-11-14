@@ -30,6 +30,9 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     @IBOutlet private var controller: AppController!
 
     func applicationDidFinishLaunching(_ aNotification: Notification) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+            _ = DialZoomControl().rotationChanged(.clockwise(5))
+        }
     }
 
     func applicationWillTerminate(_ aNotification: Notification) {
