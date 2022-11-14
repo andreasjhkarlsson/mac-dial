@@ -37,28 +37,63 @@
                 <customObject id="Ady-hI-5gd" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
                 <menu id="G3k-FC-fVx">
                     <items>
-                        <menuItem title="Dial Mode" id="8LI-uh-zfA">
+                        <menuItem title="Button Mode" id="Bi4-hl-Bnf">
                             <modifierMask key="keyEquivalentModifierMask"/>
-                            <menu key="submenu" title="Dial Mode" id="MrT-v4-Wf1">
+                            <menu key="submenu" title="Button Mode" id="RM7-l6-XsX">
                                 <items>
-                                    <menuItem title="Scroll Mode" image="icon-scroll-small" identifier="mode.scroll" id="v7h-h5-CmP">
+                                    <menuItem title="Playback Control" image="icon-playback-small" identifier="button.mode.playback" id="I2U-aD-qMg">
                                         <modifierMask key="keyEquivalentModifierMask"/>
                                         <connections>
-                                            <action selector="modeSelectWithItem:" target="gIN-nu-Pip" id="mYK-VX-2Gm"/>
+                                            <action selector="buttonModeSelectWithItem:" target="gIN-nu-Pip" id="zHS-Iv-v6H"/>
                                         </connections>
                                     </menuItem>
-                                    <menuItem title="Playback Mode" state="on" image="icon-playback-small" identifier="mode.playback" id="gME-7l-za8">
+                                    <menuItem title="Left Button Click" state="on" image="icon-click-small" identifier="button.mode.leftclick" id="swb-eL-lJi">
                                         <modifierMask key="keyEquivalentModifierMask"/>
                                         <connections>
-                                            <action selector="modeSelectWithItem:" target="gIN-nu-Pip" id="jKF-w9-Xhf"/>
+                                            <action selector="buttonModeSelectWithItem:" target="gIN-nu-Pip" id="tZZ-6j-QNt"/>
                                         </connections>
                                     </menuItem>
                                 </items>
                             </menu>
-                            <connections>
-                                <action selector="modeSelectWithItem:" target="gIN-nu-Pip" id="UwT-26-Rfq"/>
-                            </connections>
                         </menuItem>
+                        <menuItem title="Dial Mode" id="8LI-uh-zfA">
+                            <modifierMask key="keyEquivalentModifierMask"/>
+                            <menu key="submenu" title="Dial Mode" id="MrT-v4-Wf1">
+                                <items>
+                                    <menuItem title="Volume" state="on" image="icon-volume-small" identifier="dial.mode.playback" id="gME-7l-za8">
+                                        <modifierMask key="keyEquivalentModifierMask"/>
+                                        <connections>
+                                            <action selector="dialModeSelectWithItem:" target="gIN-nu-Pip" id="jgQ-R5-3KR"/>
+                                        </connections>
+                                    </menuItem>
+                                    <menuItem title="Scroll" image="icon-scroll-small" identifier="dial.mode.scroll" id="v7h-h5-CmP">
+                                        <modifierMask key="keyEquivalentModifierMask"/>
+                                        <connections>
+                                            <action selector="dialModeSelectWithItem:" target="gIN-nu-Pip" id="Emp-LZ-yeT"/>
+                                        </connections>
+                                    </menuItem>
+                                    <menuItem title="Brightness" image="icon-brightness-small" identifier="dial.mode.brightness" id="IO3-RU-FHq">
+                                        <modifierMask key="keyEquivalentModifierMask"/>
+                                        <connections>
+                                            <action selector="dialModeSelectWithItem:" target="gIN-nu-Pip" id="QnU-1e-t0R"/>
+                                        </connections>
+                                    </menuItem>
+                                    <menuItem title="Keyboard" image="icon-keyboard-small" identifier="dial.mode.keyboard" id="AOl-K5-pLD">
+                                        <modifierMask key="keyEquivalentModifierMask"/>
+                                        <connections>
+                                            <action selector="dialModeSelectWithItem:" target="gIN-nu-Pip" id="vSd-Fx-nWd"/>
+                                        </connections>
+                                    </menuItem>
+                                    <menuItem title="Screen Zoom" image="icon-zoom-small" identifier="dial.mode.zoom" id="ElE-Uo-sbd">
+                                        <modifierMask key="keyEquivalentModifierMask"/>
+                                        <connections>
+                                            <action selector="dialModeSelectWithItem:" target="gIN-nu-Pip" id="zx9-tE-Y9i"/>
+                                        </connections>
+                                    </menuItem>
+                                </items>
+                            </menu>
+                        </menuItem>
+                        <menuItem isSeparatorItem="YES" id="dwB-c8-zpm"/>
                         <menuItem title="Wheel Sensitivity" id="FER-f3-ImN">
                             <modifierMask key="keyEquivalentModifierMask"/>
                             <menu key="submenu" title="Wheel Sensitivity" id="vxR-co-3d8">
@@ -119,18 +154,24 @@
                         <menuItem title="Quit" id="O5Z-zk-v4Z">
                             <modifierMask key="keyEquivalentModifierMask"/>
                             <connections>
-                                <action selector="quitTap" target="gIN-nu-Pip" id="qbk-9P-3gs"/>
+                                <action selector="quitTap:" target="gIN-nu-Pip" id="A2I-i5-Kuq"/>
                             </connections>
                         </menuItem>
                     </items>
                 </menu>
                 <customObject id="gIN-nu-Pip" customClass="AppController" customModule="MacDial" customModuleProvider="target">
                     <connections>
-                        <outlet property="menuControlMode" destination="8LI-uh-zfA" id="Ffe-T2-bRA"/>
-                        <outlet property="menuControlModePlayback" destination="gME-7l-za8" id="LpZ-nM-dTV"/>
-                        <outlet property="menuControlModeScroll" destination="v7h-h5-CmP" id="uVG-cd-CG4"/>
+                        <outlet property="menuButtonControlMode" destination="Bi4-hl-Bnf" id="Xvg-wh-u3h"/>
+                        <outlet property="menuButtonControlModeLeftClick" destination="swb-eL-lJi" id="BEp-XR-1sK"/>
+                        <outlet property="menuButtonControlModePlayback" destination="I2U-aD-qMg" id="bSw-L0-5rz"/>
+                        <outlet property="menuDialControlMode" destination="8LI-uh-zfA" id="Ffe-T2-bRA"/>
+                        <outlet property="menuDialControlModeBrightness" destination="IO3-RU-FHq" id="h4S-5Q-QXn"/>
+                        <outlet property="menuDialControlModeKeyboard" destination="AOl-K5-pLD" id="hKL-9S-L42"/>
+                        <outlet property="menuDialControlModeScroll" destination="v7h-h5-CmP" id="uVG-cd-CG4"/>
+                        <outlet property="menuDialControlModeVolume" destination="gME-7l-za8" id="LpZ-nM-dTV"/>
+                        <outlet property="menuDialControlModeZoom" destination="ElE-Uo-sbd" id="pX0-sp-mlm"/>
+                        <outlet property="menuHaptics" destination="g2u-Rf-4tx" id="04T-ka-edn"/>
                         <outlet property="menuQuit" destination="O5Z-zk-v4Z" id="bua-Re-Fya"/>
-                        <outlet property="menuRotationClick" destination="g2u-Rf-4tx" id="04T-ka-edn"/>
                         <outlet property="menuSensitivity" destination="FER-f3-ImN" id="Rer-iP-HjA"/>
                         <outlet property="menuSensitivityHigh" destination="RIY-2g-aZW" id="cR2-bb-siw"/>
                         <outlet property="menuSensitivityLow" destination="bzY-GD-JPg" id="XBl-Py-uZC"/>
@@ -147,7 +188,12 @@
         </scene>
     </scenes>
     <resources>
+        <image name="icon-brightness-small" width="18" height="18"/>
+        <image name="icon-click-small" width="18" height="18"/>
+        <image name="icon-keyboard-small" width="18" height="18"/>
         <image name="icon-playback-small" width="36" height="36"/>
-        <image name="icon-scroll-small" width="36" height="36"/>
+        <image name="icon-scroll-small" width="18" height="18"/>
+        <image name="icon-volume-small" width="18" height="18"/>
+        <image name="icon-zoom-small" width="18" height="18"/>
     </resources>
 </document>

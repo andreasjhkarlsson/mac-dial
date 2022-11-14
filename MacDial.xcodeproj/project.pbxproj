@@ -7,42 +7,45 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		2DBA116C33D51297D5384A52 /* DialDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DBA11B74C37AE96041F400D /* DialDelegate.swift */; };
-		2DBA1469D54228F68A66EB33 /* HIDReport.md in Sources */ = {isa = PBXBuildFile; fileRef = 2DBA1824516DE7C2EA24F590 /* HIDReport.md */; };
+		2DBA116C33D51297D5384A52 /* DeviceControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DBA11B74C37AE96041F400D /* DeviceControl.swift */; };
+		2DBA1531BDED42DBEA94036E /* HID.Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DBA151FDA5C8860610CD02D /* HID.Helpers.swift */; };
+		2DBA16DB57BAE6DE838B0866 /* ButtonPlaybackControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DBA134817855F7B605FABE8 /* ButtonPlaybackControl.swift */; };
+		2DBA179F38FAAE40805B5323 /* ButtonPressControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DBA1BDF69863D61FDD7CB3F /* ButtonPressControl.swift */; };
 		2DBA1905BF6BCA15F82AF8B8 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2DBA14031F68B505C8B42CD0 /* Main.storyboard */; };
 		2DBA1B39EA030F1D06E675B7 /* UserSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DBA1898A55AE4BDB7ED1A4C /* UserSettings.swift */; };
 		2DBA1FB8954597E33AFFEB26 /* Device.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DBA134CA4B2FEEA02C66B07 /* Device.swift */; };
 		C882FA1A26F1430C00595EE1 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C882FA1926F1430C00595EE1 /* AppDelegate.swift */; };
 		C882FA1E26F1430D00595EE1 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C882FA1D26F1430D00595EE1 /* Assets.xcassets */; };
-		C89D242B2703CF4500B1A458 /* ScrollControlMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = C89D242A2703CF4500B1A458 /* ScrollControlMode.swift */; };
-		C89D242D2704870C00B1A458 /* PlaybackControlMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = C89D242C2704870C00B1A458 /* PlaybackControlMode.swift */; };
+		C89D242B2703CF4500B1A458 /* DialScrollControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = C89D242A2703CF4500B1A458 /* DialScrollControl.swift */; };
+		C89D242D2704870C00B1A458 /* DialKeysUpDownControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = C89D242C2704870C00B1A458 /* DialKeysUpDownControl.swift */; };
 		C89F31592701090400A8B365 /* Dial.swift in Sources */ = {isa = PBXBuildFile; fileRef = C89F31582701090400A8B365 /* Dial.swift */; };
 		C89F315B2701266400A8B365 /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C89F315A2701266400A8B365 /* CoreFoundation.framework */; };
 		C89F315D2701266A00A8B365 /* IOKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C89F315C2701266A00A8B365 /* IOKit.framework */; };
 		C89F315F270126E100A8B365 /* AppKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C89F315E270126E100A8B365 /* AppKit.framework */; };
-		FA01D9B327A54DFF00B542F9 /* ControlMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA01D9B227A54DFF00B542F9 /* ControlMode.swift */; };
 		FA01D9B527A5541700B542F9 /* AppController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA01D9B427A5541700B542F9 /* AppController.swift */; };
 		FA8BA9CC29214B4E008383F4 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = FA8BA9CE29214B4E008383F4 /* Localizable.strings */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		2DBA11B74C37AE96041F400D /* DialDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DialDelegate.swift; sourceTree = "<group>"; };
+		2DBA11B74C37AE96041F400D /* DeviceControl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeviceControl.swift; sourceTree = "<group>"; };
+		2DBA134817855F7B605FABE8 /* ButtonPlaybackControl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ButtonPlaybackControl.swift; sourceTree = "<group>"; };
 		2DBA134CA4B2FEEA02C66B07 /* Device.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Device.swift; sourceTree = "<group>"; };
 		2DBA14031F68B505C8B42CD0 /* Main.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
+		2DBA151FDA5C8860610CD02D /* HID.Helpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HID.Helpers.swift; sourceTree = "<group>"; };
 		2DBA1824516DE7C2EA24F590 /* HIDReport.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = HIDReport.md; sourceTree = "<group>"; };
 		2DBA1898A55AE4BDB7ED1A4C /* UserSettings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserSettings.swift; sourceTree = "<group>"; };
+		2DBA1BDF69863D61FDD7CB3F /* ButtonPressControl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ButtonPressControl.swift; sourceTree = "<group>"; };
 		C882FA1626F1430C00595EE1 /* MacDial.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MacDial.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C882FA1926F1430C00595EE1 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		C882FA1D26F1430D00595EE1 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		C882FA2526F1430D00595EE1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		C882FA2626F1430D00595EE1 /* MacDial.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = MacDial.entitlements; sourceTree = "<group>"; };
-		C89D242A2703CF4500B1A458 /* ScrollControlMode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScrollControlMode.swift; sourceTree = "<group>"; };
-		C89D242C2704870C00B1A458 /* PlaybackControlMode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaybackControlMode.swift; sourceTree = "<group>"; };
+		C89D242A2703CF4500B1A458 /* DialScrollControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DialScrollControl.swift; sourceTree = "<group>"; };
+		C89D242C2704870C00B1A458 /* DialKeysUpDownControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DialKeysUpDownControl.swift; sourceTree = "<group>"; };
 		C89F31582701090400A8B365 /* Dial.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Dial.swift; sourceTree = "<group>"; };
 		C89F315A2701266400A8B365 /* CoreFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreFoundation.framework; path = System/Library/Frameworks/CoreFoundation.framework; sourceTree = SDKROOT; };
 		C89F315C2701266A00A8B365 /* IOKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = IOKit.framework; path = System/Library/Frameworks/IOKit.framework; sourceTree = SDKROOT; };
 		C89F315E270126E100A8B365 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
-		FA01D9B227A54DFF00B542F9 /* ControlMode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ControlMode.swift; sourceTree = "<group>"; };
 		FA01D9B427A5541700B542F9 /* AppController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppController.swift; sourceTree = "<group>"; };
 		FA8BA9CD29214B4E008383F4 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -127,7 +130,7 @@
 			children = (
 				C89F31582701090400A8B365 /* Dial.swift */,
 				2DBA134CA4B2FEEA02C66B07 /* Device.swift */,
-				2DBA11B74C37AE96041F400D /* DialDelegate.swift */,
+				2DBA11B74C37AE96041F400D /* DeviceControl.swift */,
 			);
 			path = Dial;
 			sourceTree = "<group>";
@@ -135,9 +138,11 @@
 		FAC9E62927A46AFD00A6A453 /* ControlModes */ = {
 			isa = PBXGroup;
 			children = (
-				C89D242A2703CF4500B1A458 /* ScrollControlMode.swift */,
-				C89D242C2704870C00B1A458 /* PlaybackControlMode.swift */,
-				FA01D9B227A54DFF00B542F9 /* ControlMode.swift */,
+				C89D242A2703CF4500B1A458 /* DialScrollControl.swift */,
+				C89D242C2704870C00B1A458 /* DialKeysUpDownControl.swift */,
+				2DBA151FDA5C8860610CD02D /* HID.Helpers.swift */,
+				2DBA1BDF69863D61FDD7CB3F /* ButtonPressControl.swift */,
+				2DBA134817855F7B605FABE8 /* ButtonPlaybackControl.swift */,
 			);
 			path = ControlModes;
 			sourceTree = "<group>";
@@ -169,7 +174,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 1250;
-				LastUpgradeCheck = 1250;
+				LastUpgradeCheck = 1410;
 				TargetAttributes = {
 					C882FA1526F1430C00595EE1 = {
 						CreatedOnToolsVersion = 12.5.1;
@@ -216,14 +221,15 @@
 			files = (
 				FA01D9B527A5541700B542F9 /* AppController.swift in Sources */,
 				C882FA1A26F1430C00595EE1 /* AppDelegate.swift in Sources */,
-				C89D242D2704870C00B1A458 /* PlaybackControlMode.swift in Sources */,
+				C89D242D2704870C00B1A458 /* DialKeysUpDownControl.swift in Sources */,
 				C89F31592701090400A8B365 /* Dial.swift in Sources */,
-				C89D242B2703CF4500B1A458 /* ScrollControlMode.swift in Sources */,
+				C89D242B2703CF4500B1A458 /* DialScrollControl.swift in Sources */,
 				2DBA1FB8954597E33AFFEB26 /* Device.swift in Sources */,
-				2DBA116C33D51297D5384A52 /* DialDelegate.swift in Sources */,
-				FA01D9B327A54DFF00B542F9 /* ControlMode.swift in Sources */,
+				2DBA116C33D51297D5384A52 /* DeviceControl.swift in Sources */,
 				2DBA1B39EA030F1D06E675B7 /* UserSettings.swift in Sources */,
-				2DBA1469D54228F68A66EB33 /* HIDReport.md in Sources */,
+				2DBA1531BDED42DBEA94036E /* HID.Helpers.swift in Sources */,
+				2DBA179F38FAAE40805B5323 /* ButtonPressControl.swift in Sources */,
+				2DBA16DB57BAE6DE838B0866 /* ButtonPlaybackControl.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -275,6 +281,7 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
+				DEAD_CODE_STRIPPING = YES;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
@@ -336,6 +343,7 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
+				DEAD_CODE_STRIPPING = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -365,17 +373,19 @@
 				CODE_SIGN_IDENTITY = "-";
 				CODE_SIGN_STYLE = Manual;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 44;
+				CURRENT_PROJECT_VERSION = 45;
+				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = "";
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = Resources/Info.plist;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 12.0;
-				MARKETING_VERSION = 1.4.1;
+				MARKETING_VERSION = 1.4.2;
 				PRODUCT_BUNDLE_IDENTIFIER = com.lonelybytes.macdial;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -389,23 +399,28 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = Resources/MacDial.entitlements;
-				CODE_SIGN_IDENTITY = "Developer ID Application";
+				CODE_SIGN_IDENTITY = "Apple Development";
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Developer ID Application";
 				CODE_SIGN_STYLE = Manual;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 44;
+				CURRENT_PROJECT_VERSION = 45;
+				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = 2Y29N9EKUS;
+				"DEVELOPMENT_TEAM[sdk=macosx*]" = 2Y29N9EKUS;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = Resources/Info.plist;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 12.0;
-				MARKETING_VERSION = 1.4.1;
+				MARKETING_VERSION = 1.4.2;
 				PRODUCT_BUNDLE_IDENTIFIER = com.lonelybytes.macdial;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "(Developer ID) Mac Dial Status Bar Item";
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=macosx*]" = "(Developer ID) Mac Dial Status Bar Item";
 				SWIFT_VERSION = 5.0;
 			};
 			name = Release;

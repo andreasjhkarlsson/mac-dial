@@ -36,7 +36,7 @@ enum RotationState: Equatable {
     }
 }
 
-protocol DialDelegate: AnyObject {
+protocol DeviceControl: AnyObject {
     func buttonPress()
     func buttonRelease()
     func rotationChanged(_ rotation: RotationState) -> Bool

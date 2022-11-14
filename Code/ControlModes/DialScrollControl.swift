@@ -12,28 +12,17 @@
 
 import AppKit
 
-class ScrollControlMode: DialDelegate, ControlMode {
-    let image: NSImage = #imageLiteral(resourceName: "icon-scroll")
+class DialScrollControl: DeviceControl {
+    private let modifiers: NSEvent.ModifierFlags
 
-    enum Direction {
-        case up
-        case down
+    init(modifiers: NSEvent.ModifierFlags = []) {
+        self.modifiers = modifiers
     }
 
-    private var lastButtonState: ButtonState?
-
     func buttonPress() {
-        if lastButtonState != .pressed {
-            lastButtonState = .pressed
-            sendMouse(eventType: .leftMouseDown)
-        }
     }
 
     func buttonRelease() {
-        if lastButtonState != .released {
-            lastButtonState = .released
-            sendMouse(eventType: .leftMouseUp)
-        }
     }
 
     private func sendMouse(eventType: CGEventType) {

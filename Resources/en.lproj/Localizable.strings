@@ -1,19 +1,26 @@
 "dial.connected" = "Surface Dial SN: %@";
 "dial.disconnected" = "Surface Dial disconnected";
 
-"menu.rotationMode" = "Mode";
-"menu.rotationMode.scroll" = "Scroll/Click";
-"menu.rotationMode.music" = "Volume/Playback";
+"menu.buttonMode" = "Button";
+"menu.buttonMode.leftClick" = "Left Mouse Click";
+"menu.buttonMode.playback" = "Playback Control";
 
-"menu.rotationSensitivity" = "Rotation Sensitivity";
+"menu.dialMode" = "Rotation";
+"menu.dialMode.scroll" = "Scrolling";
+"menu.dialMode.music" = "Volume Control";
+"menu.dialMode.brightness" = "Brightness Control";
+"menu.dialMode.keyboard" = "Keyboard Light Control";
+"menu.dialMode.zoom" = "Zoom";
+
+"menu.rotationSensitivity" = "Sensitivity";
 "menu.rotationSensitivity.low" = "Low";
 "menu.rotationSensitivity.medium" = "Medium";
 "menu.rotationSensitivity.high" = "High";
 
-"menu.direction" = "Wheel Direction";
-"menu.direction.cw" = "Clockwise ↑";
-"menu.direction.ccw" = "Anticlockwise ↑";
+"menu.direction" = "Direction";
+"menu.direction.cw" = "Clockwise Is Up";
+"menu.direction.ccw" = "Anticlockwise Is Up";
 
-"menu.rotationFeedback" = "Haptics Feedback";
+"menu.rotationFeedback" = "Haptics";
 
 "menu.quit" = "Quit";

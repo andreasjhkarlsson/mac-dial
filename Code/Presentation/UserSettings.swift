@@ -13,7 +13,8 @@
 import Foundation
 
 extension SettingsValueKey {
-    static let operationMode: SettingsValueKey = "settings.operationMode"
+    static let dialMode: SettingsValueKey = "settings.dialMode"
+    static let buttonMode: SettingsValueKey = "settings.buttonMode"
     static let sensitivity: SettingsValueKey = "settings.sensitivity"
     static let rotationClick: SettingsValueKey = "settings.isRotationClickEnabled"
     static let wheelDirection: SettingsValueKey = "settings.wheelDirection"
@@ -26,13 +27,24 @@ class UserSettings {
         case high
     }
 
-    enum OperationMode {
+    enum DialOperationMode {
         case scrolling
-        case playbackAndVolume
+        case volume
+        case brightness
+        case keyboard
+        case zoom
     }
 
-    @FromUserDefaults(key: .operationMode, defaultValue: 2)
-    private var operationModeSetting: Int
+    enum ButtonOperationMode {
+        case leftClick
+        case playback
+    }
+
+    @FromUserDefaults(key: .dialMode, defaultValue: 2)
+    private var dialModeSetting: Int
+
+    @FromUserDefaults(key: .buttonMode, defaultValue: 2)
+    private var buttonModeSetting: Int
 
     @FromUserDefaults(key: .sensitivity, defaultValue: 2)
     private var sensitivitySetting: Int
@@ -43,18 +55,40 @@ class UserSettings {
     @FromUserDefaults(key: .wheelDirection, defaultValue: 1)
     private var wheelDirectionSetting: Int
 
-    var operationMode: OperationMode {
+    var dialMode: DialOperationMode {
         get {
-            switch operationModeSetting {
+            switch dialModeSetting {
                 case 1: return .scrolling
-                case 2: return .playbackAndVolume
+                case 2: return .volume
+                case 3: return .brightness
+                case 4: return .keyboard
+                case 5: return .zoom
                 default: return .scrolling
             }
         }
         set {
             switch newValue {
-                case .scrolling: operationModeSetting = 1
-                case .playbackAndVolume: operationModeSetting = 2
+                case .scrolling: dialModeSetting = 1
+                case .volume: dialModeSetting = 2
+                case .brightness: dialModeSetting = 3
+                case .keyboard: dialModeSetting = 4
+                case .zoom: dialModeSetting = 5
+            }
+        }
+    }
+
+    var buttonMode: ButtonOperationMode {
+        get {
+            switch dialModeSetting {
+                case 1: return .leftClick
+                case 2: return .playback
+                default: return .playback
+            }
+        }
+        set {
+            switch newValue {
+                case .leftClick: dialModeSetting = 1
+                case .playback: dialModeSetting = 2
             }
         }
     }
