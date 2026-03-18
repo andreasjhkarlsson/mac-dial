@@ -149,7 +149,7 @@ class StatusBarController
             case .some("playback"):
                 return .playback
             default:
-                return .scrolling
+                return .playback
             }
         }
         
@@ -258,7 +258,7 @@ class StatusBarController
         self.dial = dial
         self.menu = NSMenu.init()
         
-        statusBar = NSStatusBar.init()
+        statusBar = NSStatusBar.system
         statusItem = statusBar.statusItem(withLength: NSStatusItem.variableLength)
         
         menu.minimumWidth = 260
