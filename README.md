@@ -34,7 +34,7 @@ The app supports four modes:
 
 - **Scroll mode**: turning the dial scrolls; pressing the dial is a mouse click at the cursor position.
 - **Playback mode**: turning the dial controls system volume; pressing plays/pauses; double-pressing sends "next track".
-- **Brightness mode**: turning the dial adjusts display brightness; pressing does nothing.
+- **Brightness mode**: turning the dial adjusts the brightness of the display **under the cursor** (works on both built-in displays and external Apple displays like the Studio Display / Pro Display XDR, via the private `DisplayServices` framework with a graceful fallback to the F1/F2 system event). Pressing does nothing.
 - **Mission Control mode**: turning the dial switches between Spaces; pressing opens Mission Control.
 
 You can switch modes either by clicking the Mac Dial icon in the menu bar, or by **long-pressing the dial itself** (hold > 600 ms). Mac Dial gives a haptic blip when the mode cycles.
