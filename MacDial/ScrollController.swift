@@ -27,6 +27,12 @@ class ScrollController: Controller
     func onUp() {
         sendMouse(button: .up)
     }
+
+    func onCancel() {
+        // Release the pending mouse-down from onDown so we don't leave the
+        // mouse button stuck when a long-press cycles modes mid-press.
+        sendMouse(button: .up)
+    }
     
     var lastRotate: TimeInterval = Date().timeIntervalSince1970
     
