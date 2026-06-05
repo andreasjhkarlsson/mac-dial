@@ -36,17 +36,17 @@ class MenuOptionItem<Type>: NSMenuItem {
         super.init(title: title, action: nil, keyEquivalent: "")
         self.representedObject = option
     }
-    
+
     required init(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
+
     var selected : Bool
     {
         get { return self.state == .on }
         set (on) { self.state = on ? .on : .off }
     }
-    
+
     var option : Type
     {
         get
@@ -59,12 +59,12 @@ class MenuOptionItem<Type>: NSMenuItem {
 class ControllerOptionItem: MenuOptionItem<Mode>
 {
     let controller: Controller
-    
+
     init(title: String, mode: Mode, controller: Controller) {
         self.controller = controller
         super.init(title: title, option: mode)
     }
-    
+
     required init(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -79,25 +79,25 @@ extension NSMenu {
         self.addItem(items.scrollMode)
         self.addItem(items.playbackMode)
         self.addItem(items.separator2)
-        
+
         items.wheelSensitivity.submenu = NSMenu.init()
         for sensitivityOption in items.wheelSensitivityOptions {
             items.wheelSensitivity.submenu?.addItem(sensitivityOption)
         }
         self.addItem(items.wheelSensitivity)
-        
+
         items.scrollDirection.submenu = NSMenu.init()
         for scrollDirectionOption in items.scrollDirectionOptions {
             items.scrollDirection.submenu?.addItem(scrollDirectionOption)
         }
         self.addItem(items.scrollDirection)
-        
+
         items.hapticsMode.submenu = NSMenu.init()
         for hapticsModeOption in items.hapticsModeOptions {
             items.hapticsMode.submenu?.addItem(hapticsModeOption)
         }
         self.addItem(items.hapticsMode)
-        
+
         self.addItem(items.separator3)
         self.addItem(items.quit)
     }
@@ -110,7 +110,7 @@ class StatusBarController
     private let menu: NSMenu
     private let dial: Dial
     private let menuItems = MenuItems()
-    
+
     struct MenuItems {
         let title = NSMenuItem.init(title: "Mac Dial")
         let connectionStatus = NSMenuItem.init()
@@ -138,7 +138,7 @@ class StatusBarController
         let separator3 = NSMenuItem.separator()
         let quit = NSMenuItem.init(title: "Quit")
     }
-    
+
     var currentMode: Mode
     {
         get {
@@ -152,7 +152,7 @@ class StatusBarController
                 return .scrolling
             }
         }
-        
+
         set (value) {
             switch (value)
             {
@@ -163,7 +163,7 @@ class StatusBarController
             }
         }
     }
-    
+
     var currentController: Controller
     {
         get {
@@ -176,7 +176,18 @@ class StatusBarController
             }
         }
     }
-    
+
+    private var currentScrollDirectionMultiplier: Int {
+        switch scrollDirection {
+        case .standard:
+            return 1
+        case .natural:
+            return -1
+        case .none:
+            return 1
+        }
+    }
+
     var wheelSensitivity: WheelSensitivity? {
         get {
             let raw = UserDefaults.standard.string(forKey: "sensitivity") ?? WheelSensitivity.medium.rawValue
@@ -201,11 +212,11 @@ class StatusBarController
             for option in menuItems.wheelSensitivityOptions {
                 option.state = (option.representedObject as! WheelSensitivity) == sensitivity ? .on : .off
             }
-            
+
             UserDefaults.standard.setValue(sensitivity?.rawValue, forKey: "sensitivity")
         }
     }
-    
+
     var scrollDirection: ScrollDirection? {
         get {
             let raw = UserDefaults.standard.string(forKey: "direction") ?? ScrollDirection.natural.rawValue
@@ -225,11 +236,11 @@ class StatusBarController
             for option in menuItems.scrollDirectionOptions {
                 option.state = (option.representedObject as! ScrollDirection) == scrollingDirection ? .on : .off
             }
-            
+
             UserDefaults.standard.setValue(scrollingDirection?.rawValue, forKey: "direction")
         }
     }
-    
+
     var hapticsMode: HapticsMode? {
         get {
             let raw = UserDefaults.standard.string(forKey: "hapticsmode") ?? HapticsMode.disabled.rawValue
@@ -249,93 +260,116 @@ class StatusBarController
             for option in menuItems.hapticsModeOptions {
                 option.state = (option.representedObject as! HapticsMode) == hapticsModeSet ? .on : .off
             }
-            
+
             UserDefaults.standard.setValue(String(hapticsModeSet!.rawValue), forKey: "hapticsmode")
         }
     }
-    
+
     init( _ dial: Dial) {
         self.dial = dial
         self.menu = NSMenu.init()
-        
-        statusBar = NSStatusBar.init()
+
+        statusBar = NSStatusBar.system
         statusItem = statusBar.statusItem(withLength: NSStatusItem.variableLength)
-        
+
         menu.minimumWidth = 260
-        
+
         let attributes: [NSAttributedString.Key: Any] = [
             .font: NSFont.boldSystemFont(ofSize: 0)
         ]
-        
+
         menuItems.title.attributedTitle = NSAttributedString(string: menuItems.title.title, attributes: attributes)
         menuItems.title.target = self
         menuItems.title.action = #selector(showAbout(sender:))
-        
+
         menuItems.connectionStatus.target = self
         menuItems.connectionStatus.isEnabled = false
-        
+
         menuItems.scrollMode.target = self
         menuItems.scrollMode.action = #selector(setMode(sender:))
         menuItems.scrollMode.selected = currentMode == .scrolling;
-        
+
         menuItems.playbackMode.target = self
         menuItems.playbackMode.action = #selector(setMode(sender:))
         menuItems.playbackMode.selected = currentMode == .playback;
-        
+
+        if let scrollController = menuItems.scrollMode.controller as? ScrollController {
+            scrollController.onLongPress = { [weak self] in
+                self?.toggleModeFromDialPress()
+            }
+        }
+
+        if let playbackController = menuItems.playbackMode.controller as? PlaybackController {
+            playbackController.onLongPress = { [weak self] in
+                self?.toggleModeFromDialPress()
+            }
+        }
+
         for option in menuItems.wheelSensitivityOptions {
             option.target = self
             option.action = #selector(setSensitivity(sender:))
             option.selected = option.option == wheelSensitivity
         }
         wheelSensitivity = wheelSensitivity // trigger set which updates dial
-        
+
         for option in menuItems.scrollDirectionOptions {
             option.target = self
             option.action = #selector(setScrollDirection(sender:))
             option.selected = option.option == scrollDirection
         }
-        
+        scrollDirection = scrollDirection // trigger set which updates dial
+
         for option in menuItems.hapticsModeOptions {
             option.target = self
             option.action = #selector(setHaptics(sender:))
             option.selected = option.option == hapticsMode
         }
         hapticsMode = hapticsMode // trigger set which updates dial
-        
-        
+
+
         menuItems.quit.target = self;
         menuItems.quit.action = #selector(quitApp(sender:))
-        
+
         menu.addMenuItems(menuItems)
-        
+
         statusItem.menu = menu
-        
+
         if let button = statusItem.button {
             button.target = self
             updateIcon()
         }
-        
+
         Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { [weak self]_ in
             self?.updateConnectionStatus()
         }
-        
+
         dial.onButtonStateChanged = { [unowned self] state in
-            switch state {
-            case .pressed:
-                currentController.onDown()
-                break
-            case .released:
-                currentController.onUp()
-                break
+            DispatchQueue.main.async {
+                switch state {
+                case .pressed:
+                    self.currentController.onDown()
+                    break
+                case .released:
+                    self.currentController.onUp()
+                    break
+                }
             }
         }
-        
+
         dial.onRotation = { [unowned self] rotation, scrollDirection in
-            currentController.onRotate(rotation, scrollDirection)
+            DispatchQueue.main.async {
+                let effectiveScrollDirection = self.currentScrollDirectionMultiplier
+                self.currentController.onRotate(rotation, effectiveScrollDirection)
+            }
         }
     }
-    
+
     private func updateConnectionStatus() {
+        if !AXIsProcessTrusted() {
+            menuItems.connectionStatus.title = "Accessibility permission required"
+            return
+        }
+
         if dial.device.isConnected {
             let serialNumber = dial.device.serialNumber
             menuItems.connectionStatus.title = "Surface Dial '\(serialNumber)' connected"
@@ -344,9 +378,9 @@ class StatusBarController
             menuItems.connectionStatus.title = "No Surface Dial connected"
         }
     }
-    
+
     private func updateIcon() {
-        
+
         if let button = statusItem.button {
             if (menuItems.scrollMode.state == .on) {
                 button.image = #imageLiteral(resourceName: "icon-scroll")
@@ -354,39 +388,48 @@ class StatusBarController
             else if (menuItems.playbackMode.state == .on) {
                 button.image = #imageLiteral(resourceName: "icon-playback")
             }
-            
+
+            button.image?.isTemplate = true
             button.image?.size = NSSize(width: 18, height: 18)
-            
+            button.toolTip = "Mac Dial"
+
             button.imagePosition = .imageLeft
         }
     }
-    
-    @objc func showAbout(sender: AnyObject) {
-        
-    }
-    
-    @objc func setMode(sender: AnyObject) {
-        
-        let item = sender as! ControllerOptionItem
-        
-        menuItems.playbackMode.state = item == menuItems.playbackMode ? .on : .off
-        menuItems.scrollMode.state = item == menuItems.scrollMode ? .on : .off
-        
-        currentMode = item.option
-        
+
+    private func applyMode(_ mode: Mode) {
+        currentMode = mode
+        menuItems.playbackMode.selected = mode == .playback
+        menuItems.scrollMode.selected = mode == .scrolling
         updateIcon()
     }
-    
+
+    private func toggleModeFromDialPress() {
+        applyMode(currentMode == .scrolling ? .playback : .scrolling)
+        dial.device.impact(repeatCount: 1)
+    }
+
+    @objc func showAbout(sender: AnyObject) {
+
+    }
+
+    @objc func setMode(sender: AnyObject) {
+
+        let item = sender as! ControllerOptionItem
+
+        applyMode(item.option)
+    }
+
     @objc func setSensitivity(sender: AnyObject) {
         let item = sender as! NSMenuItem
         wheelSensitivity = (item.representedObject as! WheelSensitivity)
     }
-    
+
     @objc func setScrollDirection(sender: AnyObject) {
         let item = sender as! NSMenuItem
         scrollDirection = (item.representedObject as! ScrollDirection)
     }
-    
+
     @objc func setHaptics(sender: AnyObject) {
         let item = sender as! NSMenuItem
         hapticsMode = (item.representedObject as! HapticsMode)
