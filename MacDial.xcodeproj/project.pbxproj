@@ -15,6 +15,9 @@
 		C89D24292703BA5E00B1A458 /* Controller.swift in Sources */ = {isa = PBXBuildFile; fileRef = C89D24282703BA5E00B1A458 /* Controller.swift */; };
 		C89D242B2703CF4500B1A458 /* ScrollController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C89D242A2703CF4500B1A458 /* ScrollController.swift */; };
 		C89D242D2704870C00B1A458 /* PlaybackController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C89D242C2704870C00B1A458 /* PlaybackController.swift */; };
+		C89F31602701268000A8B365 /* ZoomController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C89F315F2701268000A8B365 /* ZoomController.swift */; };
+		C89F31622701268000A8B365 /* SeekController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C89F31612701268000A8B365 /* SeekController.swift */; };
+		C89F31642701268000A8B365 /* ModePickerPanel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C89F31632701268000A8B365 /* ModePickerPanel.swift */; };
 		C89F31592701090400A8B365 /* Dial.swift in Sources */ = {isa = PBXBuildFile; fileRef = C89F31582701090400A8B365 /* Dial.swift */; };
 		C89F315B2701266400A8B365 /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C89F315A2701266400A8B365 /* CoreFoundation.framework */; };
 		C89F315D2701266A00A8B365 /* IOKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C89F315C2701266A00A8B365 /* IOKit.framework */; };
@@ -33,6 +36,9 @@
 		C89D24282703BA5E00B1A458 /* Controller.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Controller.swift; sourceTree = "<group>"; };
 		C89D242A2703CF4500B1A458 /* ScrollController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScrollController.swift; sourceTree = "<group>"; };
 		C89D242C2704870C00B1A458 /* PlaybackController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaybackController.swift; sourceTree = "<group>"; };
+		C89F315F2701268000A8B365 /* ZoomController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZoomController.swift; sourceTree = "<group>"; };
+		C89F31612701268000A8B365 /* SeekController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SeekController.swift; sourceTree = "<group>"; };
+		C89F31632701268000A8B365 /* ModePickerPanel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModePickerPanel.swift; sourceTree = "<group>"; };
 		C89F3155270106E400A8B365 /* MacDial-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "MacDial-Bridging-Header.h"; sourceTree = "<group>"; };
 		C89F31582701090400A8B365 /* Dial.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Dial.swift; sourceTree = "<group>"; };
 		C89F315A2701266400A8B365 /* CoreFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreFoundation.framework; path = System/Library/Frameworks/CoreFoundation.framework; sourceTree = SDKROOT; };
@@ -86,6 +92,9 @@
 				C89F31582701090400A8B365 /* Dial.swift */,
 				C89D242A2703CF4500B1A458 /* ScrollController.swift */,
 				C89D242C2704870C00B1A458 /* PlaybackController.swift */,
+				C89F315F2701268000A8B365 /* ZoomController.swift */,
+				C89F31612701268000A8B365 /* SeekController.swift */,
+				C89F31632701268000A8B365 /* ModePickerPanel.swift */,
 			);
 			path = MacDial;
 			sourceTree = "<group>";
@@ -184,6 +193,9 @@
 				C89D242D2704870C00B1A458 /* PlaybackController.swift in Sources */,
 				C89F31592701090400A8B365 /* Dial.swift in Sources */,
 				C89D242B2703CF4500B1A458 /* ScrollController.swift in Sources */,
+				C89F31602701268000A8B365 /* ZoomController.swift in Sources */,
+				C89F31622701268000A8B365 /* SeekController.swift in Sources */,
+				C89F31642701268000A8B365 /* ModePickerPanel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -326,15 +338,12 @@
 				COMBINE_HIDPI_IMAGES = YES;
 				DEVELOPMENT_ASSET_PATHS = "\"MacDial/Preview Content\"";
 				ENABLE_PREVIEWS = YES;
-				HEADER_SEARCH_PATHS = "$(SRCROOT)/lib/hidapi/hidapi";
 				INFOPLIST_FILE = MacDial/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
-				LIBRARY_SEARCH_PATHS = "$(SRCROOT)/lib/hidapi/build/src/mac";
 				MACOSX_DEPLOYMENT_TARGET = 10.15;
-				OTHER_LDFLAGS = "-lhidapi";
 				PRODUCT_BUNDLE_IDENTIFIER = com.andreasjhkarlsson.MacDial;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "$(SRCROOT)/MacDial/MacDial-Bridging-Header.h";
@@ -352,16 +361,12 @@
 				COMBINE_HIDPI_IMAGES = YES;
 				DEVELOPMENT_ASSET_PATHS = "\"MacDial/Preview Content\"";
 				ENABLE_PREVIEWS = YES;
-				HEADER_SEARCH_PATHS = "$(SRCROOT)/lib/hidapi/hidapi";
 				INFOPLIST_FILE = MacDial/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
-				LIBRARY_SEARCH_PATHS = "$(SRCROOT)/lib/hidapi/build/src/mac";
-				"LIBRARY_SEARCH_PATHS[arch=x86_64]" = "$(SRCROOT)/lib/hidapi/build_x86/src/mac";
 				MACOSX_DEPLOYMENT_TARGET = 10.15;
-				OTHER_LDFLAGS = "-lhidapi";
 				PRODUCT_BUNDLE_IDENTIFIER = com.andreasjhkarlsson.MacDial;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "$(SRCROOT)/MacDial/MacDial-Bridging-Header.h";
